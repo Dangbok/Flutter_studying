@@ -15,6 +15,7 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
+  // 로고 버튼을 눌러 로그인을 실행하고 로그아웃 버튼으로 로그아웃 처리
   LoginPlatform _loginPlatform = LoginPlatform.none;
 
 
@@ -43,14 +44,20 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   void signInWithKakao() async {
     try {
+      // 카카카오톡 설치여부 확인
       bool isInstalled = await isKakaoTalkInstalled();
 
       OAuthToken token = isInstalled
+      // 카카오톡 설치되어 있다면 카카오톡 실행하여 로그인
           ? await UserApi.instance.loginWithKakaoTalk()
+      // 카카오톡 설치되지 않았다면 웹으로 로그인 진행
           : await UserApi.instance.loginWithKakaoAccount();
 
+      // 유저정보 확인을 http 패키지로 진행
       final url = Uri.https('kapi.kakao.com', '/v2/user/me');
 
+      // 로그인 성공시 OAuthToken으로 acessToken 값 받아올 수 있음
+      // 이 토큰 값으로 유저정보를 확인하는 요청을 보내면 이름과 이메일 정보얻음
       final response = await http.get(
         url,
         headers: {
@@ -61,6 +68,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
       final profileInfo = json.decode(response.body);
       print(profileInfo.toString());
 
+      // 로그인 상태값 갱신
       setState(() {
         _loginPlatform = LoginPlatform.kakao;
       });
@@ -69,18 +77,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     }
   }
 
-
-  // void _get_user_info() async {
-  //   try {
-  //     User user = await UserApi.instance.me();
-  //     print('사용자 정보 요청 성공'
-  //         '\n회원번호: ${user.id}'
-  //         '\n닉네임: ${user.kakaoAccount?.profile?.nickname}');
-  //   } catch (error) {
-  //     print('사용자 정보 요청 실패 $error');
-  //   }
-  // }
-
+  // 로그아웃 처리 함수
   void signOut() async {
     switch (_loginPlatform) {
       case LoginPlatform.kakao:
@@ -90,6 +87,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         break;
     }
 
+    // 로그인 상태값을 false로, 현재 로그인 플랫폼을 none으로 갱신
     setState(() {
       _loginPlatform = LoginPlatform.none;
     });
@@ -105,18 +103,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
         ),
         centerTitle: true,
       ),
-//       body: Center(
-//           child: ElevatedButton(
-//             child: const Text('kakaologin'),
-//             onPressed: () async {
-//               // print(await KakaoSdk.origin);
-//               loginWithKakaoAccount();
-//             },
-//           )),
-//     );
-//   }
-// }
-
       body: Center(
           child: _loginPlatform != LoginPlatform.none
               ? _logoutButton()
@@ -124,7 +110,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _loginButton(
-                'kakao_logo',
                 signInWithKakao,
               )
             ],
@@ -132,49 +117,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
     );
   }
 
-  // body: Container(
-  //     color: Colors.white,
-  //     child: Center(
-  //       child: ElevatedButton(
-  //           child: Text("카카오 로그인"),
-  //           onPressed: () async {
-  //             if (await isKakaoTalkInstalled()) {
-  //               try {
-  //                 await UserApi.instance.loginWithKakaoTalk();
-  //                 print('카카오톡으로 로그인 성공');
-  //                 _get_user_info();
-  //               } catch (error) {
-  //                 print('카카오톡으로 로그인 실패 $error');
-  //                 // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-  //                 try {
-  //                   await UserApi.instance.loginWithKakaoAccount();
-  //                   print('카카오계정으로 로그인 성공');
-  //                   _get_user_info();
-  //                 } catch (error) {
-  //                   print('카카오계정으로 로그인 실패 $error');
-  //                 }
-  //               }
-  //             } else {
-  //               try {
-  //                 await UserApi.instance.loginWithKakaoAccount();
-  //                 print('카카오계정으로 로그인 성공');
-  //                 _get_user_info();
-  //               } catch (error) {
-  //                 print('카카오계정으로 로그인 실패 $error');
-  //               }
-  //             }
-  //           }),
-  //     )),
-//   );
-// }}
-
-  Widget _loginButton(String path, VoidCallback onTap) {
+  Widget _loginButton(VoidCallback onTap) { // 로그인 처리 함수 받기
+    // 그림자 효과주기 위해 Card 사용
     return Card(
       elevation: 5.0,
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
       child: Ink.image(
-        image: AssetImage('assets/$path.jpg'),
+        image: AssetImage('assets/img.jpg'),
         width: 60,
         height: 60,
         child: InkWell(
