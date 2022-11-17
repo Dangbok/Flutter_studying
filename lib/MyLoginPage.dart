@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_flutter2/Login_platform.dart';
-
+import 'package:login_flutter2/MainPage.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({Key? key}) : super(key: key);
@@ -18,39 +18,15 @@ class _MyLoginPageState extends State<MyLoginPage> {
   // 로고 버튼을 눌러 로그인을 실행하고 로그아웃 버튼으로 로그아웃 처리
   LoginPlatform _loginPlatform = LoginPlatform.none;
 
-
-  // Future<OAuthToken> loginWithKakaoAccount({
-  //   List<Prompt>? prompts,
-  //   List<String>? channelPublicIds,
-  //   List<String>? serviceTerms,
-  //   String? loginHint,
-  //   String? nonce,
-  // }) async {
-  //   String codeVerifier = AuthCodeClient.codeVerifier();
-  //   final authCode = await AuthCodeClient.instance.request(
-  //     prompts: prompts,
-  //     channelPublicIds: channelPublicIds,
-  //     serviceTerms: serviceTerms,
-  //     codeVerifier: codeVerifier,
-  //     loginHint: loginHint,
-  //     nonce: nonce,
-  //   );
-  //   final token = await AuthApi.instance
-  //       .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
-  //   await TokenManagerProvider.instance.manager.setToken(token);
-  //   return token;
-  // }
-
-
   void signInWithKakao() async {
     try {
       // 카카카오톡 설치여부 확인
       bool isInstalled = await isKakaoTalkInstalled();
 
       OAuthToken token = isInstalled
-      // 카카오톡 설치되어 있다면 카카오톡 실행하여 로그인
+          // 카카오톡 설치되어 있다면 카카오톡 실행하여 로그인
           ? await UserApi.instance.loginWithKakaoTalk()
-      // 카카오톡 설치되지 않았다면 웹으로 로그인 진행
+          // 카카오톡 설치되지 않았다면 웹으로 로그인 진행
           : await UserApi.instance.loginWithKakaoAccount();
 
       // 유저정보 확인을 http 패키지로 진행
@@ -72,6 +48,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
       setState(() {
         _loginPlatform = LoginPlatform.kakao;
       });
+
+        final result = await Navigator.pushNamed(context, '/main');
+
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
     }
@@ -97,27 +76,31 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           '다시,봄',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
-      body: Center(
-          child: _loginPlatform != LoginPlatform.none
-              ? _logoutButton()
-              : Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _loginButton(
-                signInWithKakao,
-              )
-            ],
-          )),
+      body: Container(
+        child: Center(
+            child: _loginPlatform != LoginPlatform.none
+                ? _logoutButton()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _loginButton(
+                        signInWithKakao,
+                      ),
+                    ],
+                  )),
+      ),
     );
   }
 
-  Widget _loginButton(VoidCallback onTap) { // 로그인 처리 함수 받기
+  Widget _loginButton(VoidCallback onTap) {
+    // 로그인 처리 함수 받기
     // 그림자 효과주기 위해 Card 사용
     return Card(
       elevation: 5.0,
@@ -137,15 +120,15 @@ class _MyLoginPageState extends State<MyLoginPage> {
     );
   }
 
-  Widget _logoutButton() {
-    return ElevatedButton(
-      onPressed: signOut,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          const Color(0xff0165E1),
-        ),
-      ),
-      child: const Text('로그아웃'),
-    );
-  }
+  // Widget _logoutButton() {
+  //   return ElevatedButton(
+  //     onPressed: signOut,
+  //     style: ButtonStyle(
+  //       backgroundColor: MaterialStateProperty.all(
+  //         const Color(0xff0165E1),
+  //       ),
+  //     ),
+  //     child: const Text('로그아웃'),
+  //   );
+  // }
 }
