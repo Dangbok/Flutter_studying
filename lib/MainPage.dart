@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:http/http.dart' as http;
-import 'package:login_flutter2/Login_platform.dart';
+import 'package:login_flutter2/Kakao_login.dart';
 import 'package:login_flutter2/MyLoginPage.dart';
+import 'package:login_flutter2/main_view_model.dart';
 
 // Page1의 _buildMiddle() 메서드에 들어갈 사진 url
 final dummyItems = [
@@ -23,7 +20,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  LoginPlatform _loginPlatform = LoginPlatform.none;
+  // LoginPlatform _loginPlatform = LoginPlatform.none;
+  final viewModel=MainViewModel(KakaoLogin());
 
   var _index = 0; // 페이지 인덱스 0,1,2
 
@@ -50,8 +48,14 @@ class _MainPageState extends State<MainPage> {
             icon: Icon((Icons.add)),
             color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
           ),
-          child: _loginPlatform != LoginPlatform.none
-              ? _logoutButton()
+          ElevatedButton(
+              onPressed: () async {
+                await viewModel.logout();
+                setState(() {});
+                // Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+              },
+              child: const Text('Logout'))
         ],
         centerTitle: true, // 제목을 가운데로
       ),
@@ -81,17 +85,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-  Widget _logoutButton() {
-    return ElevatedButton(
-      onPressed: signOut,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          const Color(0xff0165E1),
-        ),
-      ),
-      child: const Text('로그아웃'),
-    );
-  }
 }
 
 // 홈페이지 클래스-> Scaffold의 body 프로퍼티에 코드 연동
@@ -108,13 +101,6 @@ class Page1 extends StatelessWidget {
         _buildBottom(),
       ],
     );
-
-    //   Center(
-    //   child: Text(
-    //     '홈 페이지',
-    //     style: TextStyle(fontSize: 40),
-    //   ),
-    // );
   }
 
   // 상단
@@ -256,21 +242,6 @@ class Page1 extends StatelessWidget {
           },
         );
       }).toList(),
-
-      // items: [1, 2, 3, 4].map((i) { // 다섯 페이지(map()함수는 리스트의 요소를 다른 요소로 변경시킴)
-      //   return Builder(
-      //     builder: (BuildContext context) { // context를 사용하고자 할 때
-      //       return Container(
-      //           width: MediaQuery.of(context).size.width, // 기기의 가로 길이(MediaQuery클래스는 기기의 정보를 얻는 클래스인데 사용하려면 BuildContext의 인스턴스를 of() 메서드에 인수로 전달해야 함)
-      //           margin: EdgeInsets.symmetric(horizontal: 5), // 좌우 여백 5
-      //           decoration: BoxDecoration(color: Colors.amber), // 배경색
-      //           child: Text(
-      //             'text $i',
-      //             style: TextStyle(fontSize: 16),
-      //           ));
-      //     },
-      //   );
-      // }).toList(),
     );
   }
 
@@ -307,13 +278,6 @@ class Page2 extends StatelessWidget {
         _buildBottom(),
       ],
     );
-
-    //   Center(
-    //   child: Text(
-    //     '홈 페이지',
-    //     style: TextStyle(fontSize: 40),
-    //   ),
-    // );
   }
 
   // 상단
@@ -455,21 +419,6 @@ class Page2 extends StatelessWidget {
           },
         );
       }).toList(),
-
-      // items: [1, 2, 3, 4].map((i) { // 다섯 페이지(map()함수는 리스트의 요소를 다른 요소로 변경시킴)
-      //   return Builder(
-      //     builder: (BuildContext context) { // context를 사용하고자 할 때
-      //       return Container(
-      //           width: MediaQuery.of(context).size.width, // 기기의 가로 길이(MediaQuery클래스는 기기의 정보를 얻는 클래스인데 사용하려면 BuildContext의 인스턴스를 of() 메서드에 인수로 전달해야 함)
-      //           margin: EdgeInsets.symmetric(horizontal: 5), // 좌우 여백 5
-      //           decoration: BoxDecoration(color: Colors.amber), // 배경색
-      //           child: Text(
-      //             'text $i',
-      //             style: TextStyle(fontSize: 16),
-      //           ));
-      //     },
-      //   );
-      // }).toList(),
     );
   }
 
@@ -477,7 +426,7 @@ class Page2 extends StatelessWidget {
   Widget _buildBottom() {
     final items = List.generate(100, (i) {
       // 0부터 9까지의 수를 생성하여 두 번째 인수의 함수에 i 매개변수로 전달함
-      var num =i+1;
+      var num = i + 1;
       return ListTile(
         // i 값을 전달받아 ListTile 위젯 형태로 변환하여 그것들의 리스트가 반환됨
         leading: Icon(Icons.notifications_none),
