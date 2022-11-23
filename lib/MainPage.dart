@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:login_flutter2/Kakao_login.dart';
 import 'package:login_flutter2/MyLoginPage.dart';
 import 'package:login_flutter2/main_view_model.dart';
@@ -20,7 +19,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // LoginPlatform _loginPlatform = LoginPlatform.none;
+  // 로그인 생성자
   final viewModel=MainViewModel(KakaoLogin());
 
   var _index = 0; // 페이지 인덱스 0,1,2
@@ -48,11 +47,12 @@ class _MainPageState extends State<MainPage> {
             icon: Icon((Icons.add)),
             color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
           ),
+          // 로그아웃 버튼
           ElevatedButton(
               onPressed: () async {
                 await viewModel.logout();
                 setState(() {});
-                // Navigator.pop(context);
+                // 버튼 클릭시 로그인 페이지로 이동
                 Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               },
               child: const Text('Logout'))
@@ -247,12 +247,13 @@ class Page1 extends StatelessWidget {
 
 // 하단
   Widget _buildBottom() {
-    final items = List.generate(10, (i) {
+    final items = List.generate(100, (i) {
       // 0부터 9까지의 수를 생성하여 두 번째 인수의 함수에 i 매개변수로 전달함
+      var num = i + 1;
       return ListTile(
         // i 값을 전달받아 ListTile 위젯 형태로 변환하여 그것들의 리스트가 반환됨
         leading: Icon(Icons.notifications_none),
-        title: Text('[이벤트] 이것은 공지사항입니다.'),
+        title: Text('[이벤트] 이것은 $num번째 공지사항입니다.'),
       );
     });
 
@@ -270,174 +271,11 @@ class Page2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      // Column을 ListView로 변경하면 상하 스크롤이 생김
-      children: <Widget>[
-        _buildTop(),
-        _buildMiddle(),
-        _buildBottom(),
-      ],
-    );
-  }
-
-  // 상단
-  Widget _buildTop() {
-    return Padding(
-      // 전체 여백 주기
-      padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              InkWell(
-                // 위젯 클릭 시 물결 효과(클릭 가능하게 함)
-                onTap: () {
-                  print('클릭');
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.local_taxi,
-                      size: 40,
-                    ),
-                    Text('택시'),
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  print('클릭');
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.local_taxi,
-                      size: 40,
-                    ),
-                    Text('블랙'),
-                  ],
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_taxi,
-                    size: 40,
-                  ),
-                  Text('바이크'),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_taxi,
-                    size: 40,
-                  ),
-                  Text('대리'),
-                ],
-              ),
-            ],
-          ), // 이것을 복사해서
-          SizedBox(
-            // 20만큼의 여백을 표현-> 단독으로 사용하면단순히 여백을 주는 용도로 자주 사용
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_taxi,
-                    size: 40,
-                  ),
-                  Text('택시'),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_taxi,
-                    size: 40,
-                  ),
-                  Text('블랙'),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_taxi,
-                    size: 40,
-                  ),
-                  Text('바이크'),
-                ],
-              ),
-
-              // Opacity로 감싸면 위젯을 숨길 수 있다.
-              Opacity(
-                opacity: 0, // 값이 0이면 완전 투명, 1이면 완전 불투명
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.local_taxi,
-                      size: 40,
-                    ),
-                    Text('대리'),
-                  ],
-                ),
-              ),
-            ],
-          ), // 여기에 붙여넣기
-        ],
+    return Center(
+      child: Text(
+        '이용서비스',
+        style: TextStyle(fontSize: 40),
       ),
-    );
-  }
-
-  // ??중단??
-  Widget _buildMiddle() {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 150,
-        autoPlay: true,
-      ),
-      items: dummyItems.map((url) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              child: ClipRRect(
-                // ClipRRect는 child를 둥근 사각형으로 자르는 위젯
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  url,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-    );
-  }
-
-// 하단
-  Widget _buildBottom() {
-    final items = List.generate(100, (i) {
-      // 0부터 9까지의 수를 생성하여 두 번째 인수의 함수에 i 매개변수로 전달함
-      var num = i + 1;
-      return ListTile(
-        // i 값을 전달받아 ListTile 위젯 형태로 변환하여 그것들의 리스트가 반환됨
-        leading: Icon(Icons.notifications_none),
-        title: Text('[이벤트] 이것은 $num번째 공지사항입니다.'),
-      );
-    });
-
-    return ListView(
-      physics: NeverScrollableScrollPhysics(), // 이 리스트의 스크롤 동작 금지
-      shrinkWrap: true, // 이 리스트의 다른 스크롤 객체 안에 있다면 true로 설정해야 함
-      children: items,
     );
   }
 }
