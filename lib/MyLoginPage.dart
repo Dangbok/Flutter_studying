@@ -16,10 +16,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("다시, 봄"),
-        centerTitle: true,
-      ),
+      backgroundColor: Color(0xff8FDBA2),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +27,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
             Container(
                 margin: EdgeInsets.all(50),
                 padding: EdgeInsets.all(10),
-                child: Image.asset('assets/kakao_logo.png')),
+                child: Image.asset('assets/logo_2@4x.png')),
             // 유저 로그인됐는지 확인 Text
             Text(
               '${viewModel.isLogined}',

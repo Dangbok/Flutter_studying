@@ -20,31 +20,39 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   // 로그인 생성자
-  final viewModel=MainViewModel(KakaoLogin());
+  final viewModel = MainViewModel(KakaoLogin());
 
-  var _index = 0; // 페이지 인덱스 0,1,2
+  var _index = 0; // 페이지 인덱스 0,1,2,3
 
   var _pages = [
-    // Page1,2,3 클래스와 연동하여 변수 선언(페이지를 _pages 리스트 변수의 값으로 정의)
+    // Page1,2,3,4 클래스와 연동하여 변수 선언(페이지를 _pages 리스트 변수의 값으로 정의)
     Page1(),
     Page2(),
     Page3(),
+    Page4(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // 배경색을 흰색으로
-        title: Text(
-          '다시,봄',
-          style: TextStyle(color: Colors.black), // 글자색을 검은색으로
-        ),
+        backgroundColor: Color(0xff8FDBA2), // 배경색을 흰색으로
+        title: Image.asset('assets/logo_2@4x.png', width: 60, height: 60),
         actions: <Widget>[
           // actions 프로퍼티에는 어떠한 위젯도 리스트로 배치 가능
           IconButton(
             onPressed: () {},
-            icon: Icon((Icons.add)),
+            icon: Icon((Icons.chat)),
+            color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon((Icons.notifications)),
+            color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon((Icons.menu)),
             color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
           ),
           // 로그아웃 버튼
@@ -53,20 +61,25 @@ class _MainPageState extends State<MainPage> {
                 await viewModel.logout();
                 setState(() {});
                 // 버튼 클릭시 로그인 페이지로 이동
-                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/login', (route) => false);
               },
               child: const Text('Logout'))
         ],
-        centerTitle: true, // 제목을 가운데로
+        // centerTitle: true, // 제목을 가운데로
       ),
       body: _pages[_index],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.black,
         onTap: (index) {
           setState(() {
             _index = index; // 선택된 탭의 인덱스로 _index를 변경
           });
         },
-        currentIndex: _index, // 선택된 인덱스
+        currentIndex: _index,
+        // 선택된 인덱스
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             // 하단 탭 아이템리스트 선언
@@ -74,7 +87,11 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: '이용서비스',
+            label: '둘러보기',
+            icon: Icon(Icons.favorite),
+          ),
+          BottomNavigationBarItem(
+            label: '마켓',
             icon: Icon(Icons.assignment),
           ),
           BottomNavigationBarItem(
@@ -228,7 +245,10 @@ class Page1 extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               margin: EdgeInsets.symmetric(horizontal: 5),
               child: ClipRRect(
                 // ClipRRect는 child를 둥근 사각형으로 자르는 위젯
@@ -265,7 +285,7 @@ class Page1 extends StatelessWidget {
   }
 }
 
-// 이용서비스 클래스
+// 둘러보기 클래스
 class Page2 extends StatelessWidget {
   const Page2({Key? key}) : super(key: key);
 
@@ -273,14 +293,14 @@ class Page2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        '이용서비스',
+        '둘러보기',
         style: TextStyle(fontSize: 40),
       ),
     );
   }
 }
 
-// 내 정보 클래스
+// 마켓 클래스
 class Page3 extends StatelessWidget {
   const Page3({Key? key}) : super(key: key);
 
@@ -288,9 +308,170 @@ class Page3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        '내 정보',
+        '마켓',
         style: TextStyle(fontSize: 40),
       ),
     );
   }
 }
+
+// 내 정보 클래스
+class Page4 extends StatefulWidget {
+  const Page4({Key? key}) : super(key: key);
+
+  @override
+  State<Page4> createState() => _Page4State();
+}
+
+class _Page4State extends State<Page4> with TickerProviderStateMixin {
+  // final viewModel = MainViewModel(KakaoLogin());
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          TabBar(
+              controller: tabController,
+              indicatorColor: Colors.black,
+              indicatorWeight: 1,
+              tabs: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text('프로필'),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text('히스토리'),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text('내활동'),
+                ),
+              ]
+          ),
+          Expanded(child: TabBarView(
+            controller: tabController,
+            children: <Widget>[
+              Page11(),
+              Page22(),
+              Page33(),
+            ],
+          ),)
+        ],
+      ),
+    );
+  }
+}
+
+class Page11 extends StatelessWidget {
+  const Page11({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          _information(),
+          // _menu(),
+          // _tabView()
+        ],
+      ),
+    );
+  }
+
+  Widget _statisticsOne(String title, int value) {
+    return Column(
+      children: [
+        Text(
+          value.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 15, color: Colors.black),
+        ),
+      ],
+    );
+  }
+
+  Widget _information() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage('assets/img.jpg'),
+              ),
+              // 유저 프로필사진 가져오기
+              // Image.network(
+              //   viewModel.user?.kakaoAccount?.profile?.profileImageUrl ?? '',
+              // ),
+              const SizedBox(width: 30),
+              Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: _statisticsOne('공개 일기', 1)),
+                      Expanded(child: _statisticsOne('숨긴 일기', 1)),
+                      Expanded(child: _statisticsOne('팔로워', 1)),
+                      Expanded(child: _statisticsOne('팔로잉', 1)),
+                    ],
+                  )
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget _menu() {
+  //   return ListView();
+  // }
+
+// Widget _tabView(){
+//   return ListView();
+// }
+
+}
+
+class Page22 extends StatelessWidget {
+  const Page22({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('history');
+  }
+}
+
+class Page33 extends StatelessWidget {
+  const Page33({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('activity');
+  }
+}
+
+
+
+
+
+
