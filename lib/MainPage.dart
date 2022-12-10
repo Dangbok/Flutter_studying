@@ -34,7 +34,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: _scaffoldKey,
       // 상단 앱 바
       appBar: AppBar(
         backgroundColor: Color(0xff8FDBA2), // 배경색을 흰색으로
@@ -52,7 +54,9 @@ class _MainPageState extends State<MainPage> {
             color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldKey.currentState?.openEndDrawer();
+            },
             icon: Icon((Icons.menu)),
             color: Colors.black, // 앱의 전체 테마를 수정했다면 작성하지 않아도 됨
           ),
@@ -68,6 +72,40 @@ class _MainPageState extends State<MainPage> {
           //     // child: const Text('Logout'))
         ],
         // centerTitle: true, // 제목을 가운데로
+      ),
+      // 옵션 바
+      endDrawer: Drawer(
+        elevation: 10,
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.home,
+              ),
+              title: const Text('Page 1'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.train,
+              ),
+              title: const Text('Page 2'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
       body: _pages[_index], // index에 따라 페이지 바뀜
       // 글쓰기 플로팅 위젯
@@ -290,15 +328,35 @@ class Page1 extends StatelessWidget {
 }
 
 // 둘러보기 클래스
-class Page2 extends StatelessWidget {
+class Page2 extends StatefulWidget {
   const Page2({Key? key}) : super(key: key);
 
   @override
+  State<Page2> createState() => _Page2State();
+}
+
+class _Page2State extends State<Page2> {
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        '둘러보기',
-        style: TextStyle(fontSize: 40),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 100,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 1,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  color: Colors.grey,
+                );
+              }),
+        ],
       ),
     );
   }
