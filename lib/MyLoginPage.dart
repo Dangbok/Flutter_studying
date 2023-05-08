@@ -15,46 +15,63 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff8FDBA2),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // 유저 프로필사진 가져오기
-            // Image.network(
-            //     viewModel.user?.kakaoAccount?.profile?.profileImageUrl ?? ''),
-            Container(
-                margin: EdgeInsets.all(50),
-                padding: EdgeInsets.all(10),
-                child: Image.asset('assets/logo_2@4x.png')),
-            // 유저 로그인됐는지 확인 Text
-            Text(
-              '${viewModel.isLogined}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            // 카카오톡 로그인 버튼
-            Container(
-              margin: EdgeInsets.all(50),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFFFCE301)),
-                ),
-                onPressed: () async {
-                  await viewModel.login();
-                  setState(() {});
-                  // 로그인 되면 MainPage로 화면 이동
-                  final result = await Navigator.pushNamed(context, '/main');
-                },
-                child: Image.asset('assets/kakao_login_medium_wide.png'),
-                // child: const Text(
-                //   '카카오톡으로 로그인하기',
-                //   style: TextStyle(color: Colors.black),
+
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
+
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: new Scaffold(
+            backgroundColor: Color(0xffFFFFFF),
+            body: new Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: 130,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      '''      유기동물 임시보호 일지
+      다시, 봄''',
+                      maxLines: 8,
+                      style: TextStyle(
+                        fontSize: screenWidth * (20/360),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height*0.0001,),
+                  Container(
+                    child: Image.asset('assets/ch_orange.png'),
+                    margin: EdgeInsets.symmetric(vertical:80 ),
+                  ),
+                  // 카카오로그인
+                  Container(
+                    margin: EdgeInsets.all(50),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Color(0xFFFCE301)),
+                      ),
+                      onPressed: () async {
+                        await viewModel.login();
+                        setState(() {});
+                        // 로그인 되면 MainPage로 화면 이동
+                        final result = await Navigator.pushNamed(context, '/main');
+                      },
+                      child: Image.asset('assets/kakao_login_medium_wide.png'),
+                      // child: const Text(
+                      //   '카카오톡으로 로그인하기',
+                      //   style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }
