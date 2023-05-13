@@ -39,8 +39,8 @@ class _MainPageState extends State<MainPage> {
       key: _scaffoldKey,
       // 상단 앱 바
       appBar: AppBar(
-        backgroundColor: Color(0xff8FDBA2), // 배경색을 흰색으로
-        title: Image.asset('assets/logo_2@4x.png', width: 60, height: 60),
+        backgroundColor: Color(0xffFFF1AA), // 배경색을 흰색으로
+        title: Image.asset('assets/logo.png', width: 45, height: 45),
         actions: <Widget>[
           // actions 프로퍼티에는 어떠한 위젯도 리스트로 배치 가능
           IconButton(
@@ -116,7 +116,7 @@ class _MainPageState extends State<MainPage> {
       // 하단 내비게이션 바
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.green,
+        selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.black,
         onTap: (index) {
           setState(() {
@@ -132,15 +132,15 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: '둘러보기',
+            label: '일기쓰기',
             icon: Icon(Icons.favorite),
           ),
           BottomNavigationBarItem(
-            label: '마켓',
+            label: '임시',
             icon: Icon(Icons.assignment),
           ),
           BottomNavigationBarItem(
-            label: '내 정보',
+            label: '나의 봄',
             icon: Icon(Icons.account_circle),
           ),
         ],

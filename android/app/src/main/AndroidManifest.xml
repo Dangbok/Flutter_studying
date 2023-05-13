@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
    <application
-        android:label="login_flutter2"
+        android:label="다시, 봄"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launch_image">
         <activity
             android:name=".MainActivity"
             android:exported="true"
