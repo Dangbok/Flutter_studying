@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:login_flutter2/MyLoginPage.dart';
 import 'package:login_flutter2/MainPage.dart';
 import 'package:login_flutter2/OnbardingPage.dart';
 import 'package:login_flutter2/SplashPage.dart';
@@ -10,16 +9,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(
     nativeAppKey: '0f1772d6ba49dbd308c3df9873edf6e1',
-    // javaScriptAppKey: '19ef6355b4d2cb8afc9c439c165794be',
   );
+  // 로고 스플래시 호출
   await initialization(null);
   // FlutterNativeSplash.removeAfter(initialization);
 
   runApp(const MyApp());
 }
 
+// 로고 스플래시 구현
 Future initialization(BuildContext? context) async {
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 1));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,10 +31,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'dasi-bom',
       theme: ThemeData(primaryColor: Colors.white),
-      home: OnbardingPage(),
+      home: SplashPage(),
       // 라우터로 페이지 이동
       routes: {
-        // '/login': (context) => MyLoginPage(),
+        '/login': (context) => OnbardingPage(),
         '/main': (context) => MainPage(),
       },
     );

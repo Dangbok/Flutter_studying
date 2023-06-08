@@ -48,25 +48,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     child: Image.asset('assets/ch_orange.png'),
                     margin: EdgeInsets.symmetric(vertical:80 ),
                   ),
-                  // 카카오로그인
-                  Container(
-                    margin: EdgeInsets.all(50),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFFCE301)),
-                      ),
-                      onPressed: () async {
-                        await viewModel.login();
-                        setState(() {});
-                        // 로그인 되면 MainPage로 화면 이동
-                        final result = await Navigator.pushNamed(context, '/main');
-                      },
-                      child: Image.asset('assets/kakao_login_medium_wide.png'),
-                      // child: const Text(
-                      //   '카카오톡으로 로그인하기',
-                      //   style: TextStyle(color: Colors.black),
-                    ),
-                  ),
                 ],
               ),
             ),
