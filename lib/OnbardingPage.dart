@@ -49,10 +49,10 @@ class _OnbardingPageState extends State<OnbardingPage> {
               child: IntroductionScreen(
                 pages: [
                   PageViewModel(
-                      image: Image.asset('assets/dasibom_orange.png'),
                       title: '안녕하세요!',
                       body: '''건강하고 재밌게,
   임시보호를 기록하는 다시, 봄이에요''',
+                      image: Image.asset('assets/dasibom_orange.png'),
                       decoration: getPageDecoration()),
                   PageViewModel(
                       image: Image.asset('assets/dasibom_yellow.png'),
@@ -168,9 +168,7 @@ PageDecoration getPageDecoration() {
         fontSize: 15,
         color: Colors.black,
       ),
-      imageFlex: 1,
-      bodyFlex: 1,
       imageAlignment: Alignment.bottomRight,
-      imagePadding: EdgeInsets.only(top: 40),
-      pageColor: Colors.white);
+      imagePadding: EdgeInsets.only(top: 30),
+      pageColor: Color(0xFFF8F8F9));
 }

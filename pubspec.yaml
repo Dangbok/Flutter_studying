@@ -34,6 +34,9 @@ dependencies:
   smooth_page_indicator:
   carousel_slider: ^4.1.1
   introduction_screen:
+  image_cropper:
+  dotted_border:
+  image_picker:
   flutter:
     sdk: flutter
 
