@@ -33,11 +33,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'dasi-bom',
       theme: ThemeData(primaryColor: Colors.white),
-      home: RegisterProfileProtector(),
+      home: SplashPage(),
       // 라우터로 페이지 이동
       routes: {
         '/login': (context) => OnbardingPage(),
         '/main': (context) => MainPage(),
+        '/register1': (context) => RegisterProfileProtector(),
+        '/register2': (context) => RegisterProfileAnimal(),
       },
     );
   }

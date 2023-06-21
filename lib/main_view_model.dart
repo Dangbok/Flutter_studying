@@ -11,7 +11,13 @@ class MainViewModel{
   Future login() async {
     isLogined=await _socialLogin.login();
     if(isLogined){
-      user=await UserApi.instance.me();
+        user = await UserApi.instance.me();
+        print('사용자 정보 요청 성공'
+            '\n회원번호: ${user?.id}'
+            '\n닉네임: ${user?.kakaoAccount?.profile?.nickname}'
+            '\n이메일: ${user?.kakaoAccount?.email}'
+            '\n성별: ${user?.kakaoAccount?.gender}'
+            '\n연령대: ${user?.kakaoAccount?.ageRange}');
     }
   }
    Future logout() async{

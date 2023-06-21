@@ -109,12 +109,9 @@ class _OnbardingPageState extends State<OnbardingPage> {
                   await viewModel.login();
                   setState(() {});
                   // 로그인 되면 MainPage로 화면 이동
-                  final result = await Navigator.pushNamed(context, '/main');
+                  final result = await Navigator.pushNamed(context, '/register1');
                 },
                 child: Image.asset('assets/btn_kakao.png'),
-                // child: const Text(
-                //   '카카오톡으로 로그인하기',
-                //   style: TextStyle(color: Colors.black),
               ),
             ),
           ),
