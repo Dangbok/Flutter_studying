@@ -5,9 +5,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
 
-const String kakaoMapKey = '19ef6355b4d2cb8afc9c439c165794be';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 
 
 class RegisterProfileProtector extends StatefulWidget {
@@ -33,7 +33,8 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
   String _times = ''; // 임시보호 횟수
 
   // 카카오맵
-
+  Set<Marker> markers = {}; // 마커 변수
+  late KakaoMapController mapController;
 
   @override
   void initState() {
@@ -43,7 +44,10 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
 
   @override
   Widget build(BuildContext context) {
-    final _imageSize = MediaQuery.of(context).size.width / 4;
+    final _imageSize = MediaQuery
+        .of(context)
+        .size
+        .width / 4;
 
     return SafeArea(
       child: Scaffold(
@@ -116,7 +120,10 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                         shape: BoxShape.circle,
                         border: Border.all(
                             width: 2,
-                            color: Theme.of(context).colorScheme.primary),
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .primary),
                         image: DecorationImage(
                             image: FileImage(File(_pickedFile!.path)),
                             fit: BoxFit.cover),
@@ -132,13 +139,13 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '내 닉네임 *',
                     textAlign: TextAlign.left,
                     style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 내 닉네임 등록
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
                     maxLength: 14,
                     keyboardType: TextInputType.name,
@@ -175,7 +182,9 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     // 유효성 검사
                     validator: (value) {
                       if (value!.isEmpty) return '닉네임을 입력해 주세요.';
-                      if (value.toString().length <= 2)
+                      if (value
+                          .toString()
+                          .length <= 2)
                         return '닉네임은 두글자 이상 입력 해주셔야 합니다.';
                       return null;
                     },
@@ -190,52 +199,35 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '내 동네 *',
                     textAlign: TextAlign.left,
                     style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 내 동네 등록
-                KakaoMapView(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  kakaoMapKey: kakaoMapKey,
-                  lat: 33.450701,
-                  lng: 126.570667,
-                  zoomLevel: 2,
-                  mapType: MapType.TERRAIN,
-                  showMapTypeControl: true,
-                  showZoomControl: true,
-                  markerImageURL:
-                  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-                  onTapMarker: (message) async {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(message.message)));
-                  }),
-    ElevatedButton(
-      child: Text('카카오맵'),
-    onPressed: () async {
-      await _openKakaoMapScreen(context);
-    }),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  child: KakaoMap(
+                    onMapCreated: ((controller) async {
+                      mapController = controller;
 
-                // Container(
-                //   width: MediaQuery.of(context).size.width,
-                //     height: MediaQuery.of(context).size.height,
-                //     child: KakaoMap(
-                //       onMapCreated: ((controller) async {
-                //         mapController = controller;
-                //
-                //         markers.add(
-                //             Marker(
-                //                 markerId: UniqueKey().toString(),
-                //                 latLng: await mapController.getCenter(),
-                //             )
-                //         );
-                //         setState(() { });
-                //       }),
-                //       markers: markers.toList(),
-                //       center: LatLng(37.3608681, 126.9306506),
-                //     ),
-                // ),
-
+                      markers.add(
+                          Marker(
+                            markerId: UniqueKey().toString(),
+                            latLng: await mapController.getCenter(),
+                          )
+                      );
+                      setState(() {});
+                    }),
+                    markers: markers.toList(),
+                    center: LatLng(37.3608681, 126.9306506),
+                  ),
+                ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -245,13 +237,13 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '임시보호 횟수',
                     textAlign: TextAlign.left,
                     style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 임시보호 횟수 등록
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -292,23 +284,25 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xFFFFED8E)),
+                        MaterialStateProperty.all(Color(0xFFFFED8E)),
                       ),
-                      onPressed: () => setState(
-                        () async {
-                          validationResult =
-                              formKey.currentState?.validate() ?? false;
-                          formKey.currentState!.save();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(
-                                    _nickname + '/' + _address + '/' + _times)),
-                          );
-                          // 동물 프로필 등록 화면으로 이동
-                          final result =
+                      onPressed: () =>
+                          setState(
+                                () async {
+                              validationResult =
+                                  formKey.currentState?.validate() ?? false;
+                              formKey.currentState!.save();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        _nickname + '/' + _address + '/' +
+                                            _times)),
+                              );
+                              // 동물 프로필 등록 화면으로 이동
+                              final result =
                               await Navigator.pushNamed(context, '/register2');
-                        },
-                      ),
+                            },
+                          ),
                       child: Text(
                         "다음 단계로 이동하기",
                         style: TextStyle(
@@ -426,18 +420,9 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
       }
     }
   }
-
-  // 카카오맵 스크린
-  Future<void> _openKakaoMapScreen(BuildContext context) async {
-    KakaoMapUtil util = KakaoMapUtil();
-
-    String url =
-        await util.getMapScreenURL(33.450701, 126.570667, name: 'Kakao 본사');
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<KakaoMapController>('mapController', mapController));
   }
-}
-
-KakaoMapScreen({required String url}) {
 }

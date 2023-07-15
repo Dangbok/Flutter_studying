@@ -47,7 +47,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   kakao_flutter_sdk: ^1.2.2
   flutter_naver_login: ^1.8.0
-#  kakao_map_plugin:
+  kakao_map_plugin:
   kakaomap_webview:
 
 #  kakao_flutter_sdk_user: ^1.2.2 # 카카오 로그인
