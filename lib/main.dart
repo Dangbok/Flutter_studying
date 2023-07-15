@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-
 import 'package:login_flutter2/MainPage.dart';
 import 'package:login_flutter2/OnbardingPage.dart';
 import 'package:login_flutter2/SplashPage.dart';
@@ -14,9 +12,6 @@ void main() async {
   KakaoSdk.init(
     nativeAppKey: '0f1772d6ba49dbd308c3df9873edf6e1',
   );
-
-  const String kakaoMapKey = '19ef6355b4d2cb8afc9c439c165794be';
-  AuthRepository.initialize(appKey: kakaoMapKey);
 
   // 로고 스플래시 호출
   await initialization(null);

@@ -1,14 +1,11 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:kakaomap_webview/kakaomap_webview.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-
+import 'package:remedi_kopo/remedi_kopo.dart';
 
 class RegisterProfileProtector extends StatefulWidget {
   const RegisterProfileProtector({Key? key}) : super(key: key);
@@ -19,6 +16,7 @@ class RegisterProfileProtector extends StatefulWidget {
 }
 
 class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
+
   // 프로필 이미지 받아오기
   XFile? _pickedFile; // 이미지를 담을 변수 선언
   CroppedFile? _croppedFile; // 크롭된 이미지 담을 변수 선언
@@ -29,12 +27,10 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late bool validationResult;
   String _nickname = ''; // 내 닉네임
-  String _address = ''; // 내 동네
   String _times = ''; // 임시보호 횟수
 
-  // 카카오맵
-  Set<Marker> markers = {}; // 마커 변수
-  late KakaoMapController mapController;
+  // 내 동네 카카오 API 값 컨트롤러
+  TextEditingController _AddressController = TextEditingController();
 
   @override
   void initState() {
@@ -44,10 +40,7 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
 
   @override
   Widget build(BuildContext context) {
-    final _imageSize = MediaQuery
-        .of(context)
-        .size
-        .width / 4;
+    final _imageSize = MediaQuery.of(context).size.width / 4;
 
     return SafeArea(
       child: Scaffold(
@@ -120,10 +113,7 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                         shape: BoxShape.circle,
                         border: Border.all(
                             width: 2,
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary),
+                            color: Theme.of(context).colorScheme.primary),
                         image: DecorationImage(
                             image: FileImage(File(_pickedFile!.path)),
                             fit: BoxFit.cover),
@@ -139,13 +129,13 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '내 닉네임 *',
                     textAlign: TextAlign.left,
                     style:
-                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 내 닉네임 등록
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
                     maxLength: 14,
                     keyboardType: TextInputType.name,
@@ -182,9 +172,7 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     // 유효성 검사
                     validator: (value) {
                       if (value!.isEmpty) return '닉네임을 입력해 주세요.';
-                      if (value
-                          .toString()
-                          .length <= 2)
+                      if (value.toString().length <= 2)
                         return '닉네임은 두글자 이상 입력 해주셔야 합니다.';
                       return null;
                     },
@@ -199,33 +187,42 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '내 동네 *',
                     textAlign: TextAlign.left,
                     style:
-                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 내 동네 등록
-                Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height,
-                  child: KakaoMap(
-                    onMapCreated: ((controller) async {
-                      mapController = controller;
-
-                      markers.add(
-                          Marker(
-                            markerId: UniqueKey().toString(),
-                            latLng: await mapController.getCenter(),
-                          )
-                      );
-                      setState(() {});
-                    }),
-                    markers: markers.toList(),
-                    center: LatLng(37.3608681, 126.9306506),
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      _addressAPI(); // 카카오 주소 API
+                    },
+                    child: TextFormField(
+                      enabled: false,
+                      autovalidateMode: AutovalidateMode.always,
+                      decoration: InputDecoration(
+                          isDense: false,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
+                          hintText: '주소 검색'),
+                      controller: _AddressController,
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -237,13 +234,13 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     '임시보호 횟수',
                     textAlign: TextAlign.left,
                     style:
-                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 임시보호 횟수 등록
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -284,25 +281,23 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFFFED8E)),
+                            MaterialStateProperty.all(Color(0xFFFFED8E)),
                       ),
-                      onPressed: () =>
-                          setState(
-                                () async {
-                              validationResult =
-                                  formKey.currentState?.validate() ?? false;
-                              formKey.currentState!.save();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        _nickname + '/' + _address + '/' +
-                                            _times)),
-                              );
-                              // 동물 프로필 등록 화면으로 이동
-                              final result =
+                      onPressed: () => setState(
+                        () async {
+                          validationResult =
+                              formKey.currentState?.validate() ?? false;
+                          formKey.currentState!.save();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    _nickname + '/' + '/' + _times)),
+                          );
+                          // 동물 프로필 등록 화면으로 이동
+                          final result =
                               await Navigator.pushNamed(context, '/register2');
-                            },
-                          ),
+                        },
+                      ),
                       child: Text(
                         "다음 단계로 이동하기",
                         style: TextStyle(
@@ -420,9 +415,16 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
       }
     }
   }
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<KakaoMapController>('mapController', mapController));
+
+  // 카카오주소 API
+  _addressAPI() async {
+    KopoModel model = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => RemediKopo(),
+      ),
+    );
+    _AddressController.text =
+        '${model.sido!} ${model.sigungu!} ${model.bname!}';
   }
 }
