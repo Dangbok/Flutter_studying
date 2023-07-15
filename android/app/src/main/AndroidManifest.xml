@@ -3,11 +3,14 @@
 
     <!-- 인터넷 사용 권한 설정-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
    <application
         android:label="다시, 봄"
         android:name="${applicationName}"
-        android:icon="@mipmap/launch_image">
+        android:icon="@mipmap/launch_image"
+       android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -22,8 +25,10 @@
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+              android:resource="@style/NormalTheme" />
+            <meta-data
+                android:name="flutter.kakao.Appkey"
+                android:value="kakao0f1772d6ba49dbd308c3df9873edf6e1" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

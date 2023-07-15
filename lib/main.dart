@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+
 import 'package:login_flutter2/MainPage.dart';
 import 'package:login_flutter2/OnbardingPage.dart';
 import 'package:login_flutter2/SplashPage.dart';
@@ -12,6 +13,7 @@ void main() async {
   KakaoSdk.init(
     nativeAppKey: '0f1772d6ba49dbd308c3df9873edf6e1',
   );
+
   // 로고 스플래시 호출
   await initialization(null);
   // FlutterNativeSplash.removeAfter(initialization);

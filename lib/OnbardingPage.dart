@@ -4,6 +4,7 @@ import 'package:login_flutter2/MyLoginPage.dart';
 import 'package:login_flutter2/MainPage.dart';
 import 'package:login_flutter2/Kakao_login.dart';
 import 'package:login_flutter2/main_view_model.dart';
+import 'package:login_flutter2/NaverLogin.dart';
 
 class OnbardingPage extends StatefulWidget {
   const OnbardingPage({Key? key}) : super(key: key);
@@ -117,19 +118,7 @@ class _OnbardingPageState extends State<OnbardingPage> {
           ),
           // 네이버 로그인
           SizedBox(
-            child: Container(
-              height: 45,
-              color: Colors.white,
-              margin: EdgeInsets.only(top: 20),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                  backgroundColor: MaterialStateProperty.all(Color(0xFF00C65A)),
-                ),
-                onPressed: (){},
-                child: Image.asset('assets/btn_naver.png'),
-              ),
-            ),
+            child: NaverLoginButton(),
           ),
           // 둘러보기
           SizedBox(

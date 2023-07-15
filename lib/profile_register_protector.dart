@@ -2,8 +2,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
+
+const String kakaoMapKey = '19ef6355b4d2cb8afc9c439c165794be';
+
 
 class RegisterProfileProtector extends StatefulWidget {
   const RegisterProfileProtector({Key? key}) : super(key: key);
@@ -14,7 +19,6 @@ class RegisterProfileProtector extends StatefulWidget {
 }
 
 class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
-
   // 프로필 이미지 받아오기
   XFile? _pickedFile; // 이미지를 담을 변수 선언
   CroppedFile? _croppedFile; // 크롭된 이미지 담을 변수 선언
@@ -24,8 +28,12 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
   // Textformfield 값 받아오기
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late bool validationResult;
-  String _nickname = '';
-  String _address = '';
+  String _nickname = ''; // 내 닉네임
+  String _address = ''; // 내 동네
+  String _times = ''; // 임시보호 횟수
+
+  // 카카오맵
+
 
   @override
   void initState() {
@@ -83,6 +91,7 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                 const SizedBox(
                   height: 25,
                 ),
+                // 사진 등록
                 if (_pickedFile == null)
                   Container(
                     constraints: BoxConstraints(
@@ -122,15 +131,26 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                   child: Text(
                     '내 닉네임 *',
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
+                // 내 닉네임 등록
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
+                    maxLength: 14,
+                    keyboardType: TextInputType.name,
+                    inputFormatters: [
+                      FilteringTextInputFormatter(
+                        RegExp('[a-z A-Z ㄱ-ㅎ|가-힣| ·|： 0-9]'),
+                        allow: true,
+                      )
+                    ],
                     autovalidateMode: AutovalidateMode.always,
                     decoration: InputDecoration(
+                        counterText: '',
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
@@ -152,8 +172,9 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                         _nickname = value as String;
                       });
                     },
+                    // 유효성 검사
                     validator: (value) {
-                      if (value?.isEmpty ?? true) return '닉네임을 입력해 주세요.';
+                      if (value!.isEmpty) return '닉네임을 입력해 주세요.';
                       if (value.toString().length <= 2)
                         return '닉네임은 두글자 이상 입력 해주셔야 합니다.';
                       return null;
@@ -168,13 +189,74 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                   child: Text(
                     '내 동네 *',
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
+                // 내 동네 등록
+                KakaoMapView(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  kakaoMapKey: kakaoMapKey,
+                  lat: 33.450701,
+                  lng: 126.570667,
+                  zoomLevel: 2,
+                  mapType: MapType.TERRAIN,
+                  showMapTypeControl: true,
+                  showZoomControl: true,
+                  markerImageURL:
+                  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+                  onTapMarker: (message) async {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(message.message)));
+                  }),
+    ElevatedButton(
+      child: Text('카카오맵'),
+    onPressed: () async {
+      await _openKakaoMapScreen(context);
+    }),
+
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //     height: MediaQuery.of(context).size.height,
+                //     child: KakaoMap(
+                //       onMapCreated: ((controller) async {
+                //         mapController = controller;
+                //
+                //         markers.add(
+                //             Marker(
+                //                 markerId: UniqueKey().toString(),
+                //                 latLng: await mapController.getCenter(),
+                //             )
+                //         );
+                //         setState(() { });
+                //       }),
+                //       markers: markers.toList(),
+                //       center: LatLng(37.3608681, 126.9306506),
+                //     ),
+                // ),
+
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  width: 340,
+                  child: Text(
+                    '임시보호 횟수',
+                    textAlign: TextAlign.left,
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                  ),
+                ),
+                // 임시보호 횟수 등록
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     autovalidateMode: AutovalidateMode.always,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -188,24 +270,15 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                             width: 1,
                           ),
                         ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                        hintText: '사당동'),
+                        hintText: '없으셨다면 0으로 적어주세요!'),
                     onSaved: (value) {
                       setState(() {
-                        _nickname = value as String;
+                        _times = value as String;
                       });
-                    },
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) return '동네를 입력해 주세요.';
-                      if (value!.contains(RegExp(r'[0-9]')))
-                        return '숫자 입력은 불가능합니다.';
-                      return null;
                     },
                   ),
                 ),
+                // 다음 단계로 이동하기
                 // Text(validationResult ? 'Success' : 'Failed'),
                 SizedBox(
                   height: 60,
@@ -227,10 +300,13 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                               formKey.currentState?.validate() ?? false;
                           formKey.currentState!.save();
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(_nickname + '/' + _address)),
+                            SnackBar(
+                                content: Text(
+                                    _nickname + '/' + _address + '/' + _times)),
                           );
                           // 동물 프로필 등록 화면으로 이동
-                          final result = await Navigator.pushNamed(context, '/register2');
+                          final result =
+                              await Navigator.pushNamed(context, '/register2');
                         },
                       ),
                       child: Text(
@@ -243,33 +319,8 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 60,
-                  width: 350,
-                  child: Container(
-                    height: 30,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(top: 20),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15))),
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xFFF8F8F9)),
-                      ),
-                      onPressed: () async {
-                        // 홈 화면으로 이동
-                        final result = await Navigator.pushNamed(context, '/main');
-                      },
-                      child: Text(
-                        "나중에 등록하기",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                const SizedBox(
+                  height: 50,
                 ),
               ],
             ),
@@ -279,7 +330,7 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
     );
   }
 
-  // 아래의 해당 함수(카메라, 갤러리)를 버튼과 연결
+  // 아래의 해당 함수(카메라, 갤러리, 기본이미지)를 버튼과 연결
   _showBottomSheet() {
     return showModalBottomSheet(
       context: this.context,
@@ -311,6 +362,19 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
             ElevatedButton(
               onPressed: () => _getPhotoLibraryImage(),
               child: const Text('갤러리'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Divider(
+              thickness: 3,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () => _getDefaultImage(),
+              child: const Text('기본이미지'),
             ),
             const SizedBox(
               height: 20,
@@ -348,4 +412,32 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
       }
     }
   }
+
+  // 기본이미지 설정
+  _getDefaultImage() async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedFile = pickedFile;
+      });
+    } else {
+      if (kDebugMode) {
+        print('이미지 선택안함');
+      }
+    }
+  }
+
+  // 카카오맵 스크린
+  Future<void> _openKakaoMapScreen(BuildContext context) async {
+    KakaoMapUtil util = KakaoMapUtil();
+
+    String url =
+        await util.getMapScreenURL(33.450701, 126.570667, name: 'Kakao 본사');
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
+  }
+}
+
+KakaoMapScreen({required String url}) {
 }

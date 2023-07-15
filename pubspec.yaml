@@ -46,12 +46,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   kakao_flutter_sdk: ^1.2.2
+  flutter_naver_login: ^1.8.0
+#  kakao_map_plugin:
+  kakaomap_webview:
 
 #  kakao_flutter_sdk_user: ^1.2.2 # 카카오 로그인
 #  kakao_flutter_sdk_talk: ^1.3.0-beta.4 # 카카오톡(소셜, 메시지)
 #  kakao_flutter_sdk_story: ^1.3.0-beta.4 # 카카오스토리
 #  kakao_flutter_sdk_share: ^1.3.0-beta.4 # 카카오톡 공유
 #  kakao_flutter_sdk_navi: ^1.3.0-beta.4 # 카카오내비
+
+  #  color: "#ffffff"
+  #  image: assets/splash-bg.png
+#  background_image: "assets/splash.png"
 
   dio:
   json_serializable:
