@@ -404,16 +404,9 @@ class _RegisterProfileProtectorState extends State<RegisterProfileProtector> {
 
   // 기본이미지 설정
   _getDefaultImage() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _pickedFile = pickedFile;
-      });
-    } else {
-      if (kDebugMode) {
-        print('이미지 선택안함');
-      }
-    }
+    setState(() {
+      _pickedFile = Image.asset('assets/ch_top_yellow.png') as XFile?;
+    });
   }
 
   // 카카오주소 API

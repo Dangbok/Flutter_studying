@@ -253,7 +253,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
-                  child: DropdownButton(
+                  child: DropdownButtonFormField(
                     value: _selectedValue,
                     items: _animals.map(
                       (value) {
@@ -305,6 +305,9 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                     },
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
                 Container(
                   width: 340,
                   child: Text(
@@ -318,7 +321,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
-                  child: DropdownButton(
+                  child: DropdownButtonFormField(
                     value: _selectedKind,
                     items: _kind.map(
                       (value) {
@@ -334,6 +337,9 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                       });
                     },
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 Container(
                   width: 340,
@@ -452,7 +458,16 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                               formKey.currentState?.validate() ?? false;
                           formKey.currentState!.save();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(_name + '/' + _age + '/' + _selectedKind + '/' + _selectedValue + '/' + _intro)),
+                            SnackBar(
+                                content: Text(_name +
+                                    '/' +
+                                    _age +
+                                    '/' +
+                                    _selectedKind +
+                                    '/' +
+                                    _selectedValue +
+                                    '/' +
+                                    _intro)),
                           );
 
                           // 홈 화면으로 이동
@@ -596,15 +611,8 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
 
 // 기본이미지 설정
   _getDefaultImage() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _pickedFile = pickedFile;
-      });
-    } else {
-      if (kDebugMode) {
-        print('이미지 선택안함');
-      }
-    }
+    setState(() {
+      _pickedFile = Image.asset('assets/ch_top_yellow.png') as XFile?;
+    });
   }
 }
