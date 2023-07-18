@@ -170,7 +170,7 @@ Route _createRoute() {
 PageDecoration getPageDecoration() {
   return PageDecoration(
       // title 스타일
-      titlePadding: EdgeInsets.only(top: 90),
+      titlePadding: EdgeInsets.only(top: 50),
       bodyAlignment:Alignment.topCenter,
       titleTextStyle: TextStyle(
           fontSize: 25,

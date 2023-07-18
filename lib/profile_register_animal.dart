@@ -484,7 +484,6 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                                     child: ListBody(
                                       children: <Widget>[
                                         Text('회원가입이 완료되었습니다:)'),
-                                        Text('다시, 봄을 즐겨주세요~'),
                                       ],
                                     ),
                                   ),
