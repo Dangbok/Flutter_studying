@@ -5,6 +5,7 @@ import 'package:login_flutter2/MainPage.dart';
 import 'package:login_flutter2/Kakao_login.dart';
 import 'package:login_flutter2/main_view_model.dart';
 import 'package:login_flutter2/NaverLogin.dart';
+import 'package:login_flutter2/profile_register_protector.dart';
 
 class OnbardingPage extends StatefulWidget {
   const OnbardingPage({Key? key}) : super(key: key);
@@ -38,37 +39,39 @@ class _OnbardingPageState extends State<OnbardingPage> {
       return screenHeight(context, dividedBy: dividedBy);
     }
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
+    return Container(
+      color: Colors.white,
+      child: Column(
         children: <Widget>[
           // 온보딩
           SizedBox(
-            height: 550,
+            height: 535,
             child: Container(
-              margin: EdgeInsets.only(bottom: 35),
               child: IntroductionScreen(
                 pages: [
                   PageViewModel(
+                    reverse: true,
                       title: '안녕하세요!',
                       body: '''건강하고 재밌게,
   임시보호를 기록하는 다시, 봄이에요''',
                       image: Image.asset('assets/dasibom_orange.png'),
                       decoration: getPageDecoration()),
                   PageViewModel(
-                      image: Image.asset('assets/dasibom_yellow.png'),
+                      reverse: true,
                       title: '기록하기',
                       body: '''다시, 봄 챌린지에 참여하고
  동물 친구들의 귀여운 모습을 
  마음껏 자랑해요''',
+                      image: Image.asset('assets/dasibom_yellow.png'),
                       decoration: getPageDecoration()),
                   PageViewModel(
-                      image: Image.asset('assets/dasibom_orange.png'),
+                      reverse: true,
                       title: '추억하기',
                       body: '''임시보호가 끝나도 
  추억을 다시 돌아볼 수 있어요
  어떤 재밌는 일이 일어날지
  지금 바로 시작해 보세요!''',
+                      image: Image.asset('assets/dasibom_orange.png'),
                       decoration: getPageDecoration()),
                 ],
                 done: const Text('done'),
@@ -99,8 +102,8 @@ class _OnbardingPageState extends State<OnbardingPage> {
           SizedBox(
             child: Container(
               height: 45,
-              color: Colors.white,
-              margin: EdgeInsets.only(top: 20),
+              width: 280,
+              margin: EdgeInsets.only(top: 40,bottom: 10),
               child: ElevatedButton(
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
@@ -110,7 +113,7 @@ class _OnbardingPageState extends State<OnbardingPage> {
                   await viewModel.login();
                   setState(() {});
                   // 로그인 되면 MainPage로 화면 이동
-                  final result = await Navigator.pushNamed(context, '/register1');
+                  final result = await Navigator.of(context).push(_createRoute());
                 },
                 child: Image.asset('assets/btn_kakao.png'),
               ),
@@ -123,15 +126,18 @@ class _OnbardingPageState extends State<OnbardingPage> {
           // 둘러보기
           SizedBox(
             child: Container(
-              height: 30,
+              height: 25,
               color: Colors.white,
-              margin: EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(top: 30),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFF000000)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
                 ),
                 onPressed: (){},
-                child: Text("둘러보기",style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "둘러보기",
+                  style: TextStyle(color: Colors.white,fontWeight:FontWeight.w600),),
               ),
             ),
           ),
@@ -141,20 +147,42 @@ class _OnbardingPageState extends State<OnbardingPage> {
   }
 }
 
+// 페이지 전환 애니메이션
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => const RegisterProfileProtector(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 10.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
 // PageViewModel의 이미지 decoration 인자 값으로 주기 위한 메서드
 PageDecoration getPageDecoration() {
   return PageDecoration(
       // title 스타일
-      titlePadding: EdgeInsets.symmetric(vertical: 30) ,
-      bodyAlignment:Alignment.topLeft,
+      titlePadding: EdgeInsets.only(top: 90),
+      bodyAlignment:Alignment.topCenter,
       titleTextStyle: TextStyle(
-          fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+          color: Colors.black),
       // 본문 스타일
+      bodyPadding: EdgeInsets.only(top: 20),
       bodyTextStyle: TextStyle(
         fontSize: 15,
         color: Colors.black,
       ),
-      imageAlignment: Alignment.bottomRight,
-      imagePadding: EdgeInsets.only(top: 30),
+      imageAlignment: Alignment.bottomCenter,
+      imagePadding: EdgeInsets.only(top: 50),
       pageColor: Color(0xFFF8F8F9));
 }

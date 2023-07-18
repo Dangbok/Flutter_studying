@@ -20,7 +20,8 @@ class _NaverLoginButtonState extends State<NaverLoginButton> {
     return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          width: 212,
+          height: 45,
+          width: 280,
           margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: ElevatedButton(
             onPressed: () {

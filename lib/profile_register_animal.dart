@@ -6,6 +6,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:login_flutter2/MainPage.dart';
 
 class RegisterProfileAnimal extends StatefulWidget {
   const RegisterProfileAnimal({Key? key}) : super(key: key);
@@ -254,6 +255,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
                   child: DropdownButtonFormField(
+                    hint: Text('동물 친구의 종은 무엇인가요?'),
                     value: _selectedValue,
                     items: _animals.map(
                       (value) {
@@ -322,6 +324,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
                   child: DropdownButtonFormField(
+                    hint: Text('동물 친구의 성은 무엇인가요?'),
                     value: _selectedKind,
                     items: _kind.map(
                       (value) {
@@ -470,9 +473,35 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                                     _intro)),
                           );
 
+                          // 가입 완료 팝업 메시지
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('환영합니다!'),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text('회원가입이 완료되었습니다:)'),
+                                        Text('다시, 봄을 즐겨주세요~'),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: Text('확인'),
+                                      onPressed: () {
+                                        Navigator.of(context).push(_createRoute());
+                                      },
+                                    )
+                                  ],
+                                );
+                              });
+
                           // 홈 화면으로 이동
-                          final result =
-                              await Navigator.pushNamed(context, '/main');
+                          // final result =
+                          //     await Navigator.of(context).push(_createRoute());
                         },
                       ),
                       child: Text(
@@ -503,7 +532,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                       onPressed: () async {
                         // 홈 화면으로 이동
                         final result =
-                            await Navigator.pushNamed(context, '/main');
+                            await Navigator.of(context).push(_createRoute());
                       },
                       child: Text(
                         "나중에 등록하기",
@@ -523,6 +552,26 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
           ),
         ),
       ),
+    );
+  }
+
+  // 페이지 전환 애니메이션
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const MainPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 10.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 
