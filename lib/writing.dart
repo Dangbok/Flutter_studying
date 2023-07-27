@@ -68,6 +68,7 @@ class _WritingState extends State<Writing> {
     final _imageSize = MediaQuery.of(context).size.width / 6;
     bool isPadMode = MediaQuery.of(context).size.width > 700;
 
+    // 사진 Gridview
     List<Widget> _boxContents = [
       IconButton(
           onPressed: () {
@@ -148,9 +149,8 @@ class _WritingState extends State<Writing> {
                 // 카테고리 등록
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+                      const EdgeInsets.only(right: 130,left: 20,top: 5),
                   child: DropdownButtonFormField(
-                    hint: Text('동물 친구의 종은 무엇인가요?'),
                     value: _selectedcategory,
                     items: _category.map(
                       (value) {
@@ -160,6 +160,19 @@ class _WritingState extends State<Writing> {
                         );
                       },
                     ).toList(),
+                    decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            hintText: '카야와 3일째 기록!'),
                     onChanged: (value) {
                       setState(() {
                         _selectedcategory = value!;
@@ -296,6 +309,21 @@ class _WritingState extends State<Writing> {
                     textAlign: TextAlign.left,
                     style:
                         TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                  ),
+                ),
+                Container(
+                  width: 340,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      alignment: Alignment.topRight,
+                    ),
+                    child: const Text(
+                      '+ 스탬프 더보기',
+                      textAlign: TextAlign.right,
+                      style:
+                      TextStyle(fontWeight: FontWeight.normal, fontSize: 10,color: Colors.black),
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 // 다시,봄 스탬프 등록
