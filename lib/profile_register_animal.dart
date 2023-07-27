@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:login_flutter2/writing.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter2/MainPage.dart';
 
@@ -586,7 +587,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
   // 페이지 전환 애니메이션
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const MainPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => const Writing(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 10.0);
         const end = Offset.zero;
