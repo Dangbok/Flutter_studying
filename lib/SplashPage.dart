@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:login_flutter2/OnbardingPage.dart';
+import 'package:login_flutter2/writing.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 5),
-    ()=>Navigator.pushReplacement(context,MaterialPageRoute(builder:(context) => OnbardingPage())));
+    ()=>Navigator.pushReplacement(context,MaterialPageRoute(builder:(context) => Writing())));
   }
 
   @override

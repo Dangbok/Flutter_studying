@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:login_flutter2/Kakao_login.dart';
-import 'package:login_flutter2/MyLoginPage.dart';
 import 'package:login_flutter2/main_view_model.dart';
 
 // Page1의 _buildMiddle() 메서드에 들어갈 사진 url

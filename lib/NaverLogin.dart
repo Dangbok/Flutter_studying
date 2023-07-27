@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:login_flutter2/profile_register_protector.dart';
 
 class NaverLoginButton extends StatefulWidget {
   const NaverLoginButton({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _NaverLoginButtonState extends State<NaverLoginButton> {
         email = res.account.email;
         print(res.accessToken);
       });
-      final result = await Navigator.pushNamed(context, '/main');
+      final result = await Navigator.of(context).push(_createRoute());
     } catch (err) {
       print(err);
     }
@@ -71,4 +72,23 @@ class _NaverLoginButtonState extends State<NaverLoginButton> {
       print(err);
     }
   }
+}
+
+// 페이지 전환 애니메이션
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => const RegisterProfileProtector(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 10.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }

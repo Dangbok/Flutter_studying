@@ -1,11 +1,13 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'package:login_flutter2/provider/user_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:login_flutter2/MainPage.dart';
 
 class RegisterProfileAnimal extends StatefulWidget {
@@ -22,6 +24,9 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
   final List<XFile?> _pickedImages = []; // 이미지 여러개 담을 변수 선언
   final ImagePicker imagePicker = ImagePicker(); // ImagePicker 초기화
 
+  var defaultImg = 'assets/ch_top_yellow.png';
+  bool isDefault = false;
+
   // Textformfield 값 받아오기
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late bool validationResult;
@@ -29,6 +34,9 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
   String _age = ''; // 나이
   String _intro = ''; // 소개
   String _kindinput = ''; // 종
+
+  // 이름 정규식
+  final Pattern _validateName = RegExp('[a-z A-Z ㄱ-ㅎ|가-힣| ·|： ᆞ|ᆢ]');
 
   // 종류 콤보박스
   final _animals = ['강아지', '고양이', '직접 입력'];
@@ -115,20 +123,35 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                   )
                 else
                   Center(
-                    child: Container(
-                      width: _imageSize,
-                      height: _imageSize,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary),
-                        image: DecorationImage(
-                            image: FileImage(File(_pickedFile!.path)),
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                  ),
+                      child: isDefault == false
+                          ? Container(
+                          width: _imageSize,
+                          height: _imageSize,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary),
+                              image: DecorationImage(
+                                  image: FileImage(File(_pickedFile!.path)),
+                                  fit: BoxFit.cover)))
+                          : Container(
+                        width: _imageSize,
+                        height: _imageSize,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary),
+                            image: DecorationImage(
+                              image: AssetImage(defaultImg),
+                              fit: BoxFit.contain,
+                            )),
+                      )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -150,7 +173,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                     keyboardType: TextInputType.name,
                     inputFormatters: [
                       FilteringTextInputFormatter(
-                        RegExp('[a-z A-Z ㄱ-ㅎ|가-힣| ·|：]'),
+                        _validateName,
                         allow: true,
                       )
                     ],
@@ -174,9 +197,14 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                         ),
                         hintText: '동물의 애칭을 적어주세요.'),
                     onSaved: (value) {
-                      setState(() {
-                        _name = value as String;
-                      });
+                      context.read<UserStore>().setName(
+                          value.toString()); // UserStore에 있는 animalName 핸들링
+                      print(context
+                          .read<UserStore>()
+                          .animalName); // UserStore에 있는 animalName에 접근
+                      // setState(() {
+                      //   _name = value as String;
+                      // });
                     },
                     // 유효성 검사
                     validator: (value) {
@@ -272,41 +300,42 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                     },
                   ),
                 ),
-                // 종류 직접 입력시 등록(직접 입력 시에만 뜨도록)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: TextFormField(
-                    maxLength: 10,
-                    keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      FilteringTextInputFormatter(
-                        RegExp('[a-z A-Z ㄱ-ㅎ|가-힣| ·|：]'),
-                        allow: true,
-                      )
-                    ],
-                    autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
-                        counterText: '',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
+                // 종류 직접 입력시 등록(직접 입력 시에만 뜨도록 구현해야 합니다!)
+                if (_selectedValue == '직접 입력')
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    child: TextFormField(
+                      maxLength: 10,
+                      keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        FilteringTextInputFormatter(
+                          RegExp('[a-z A-Z ㄱ-ㅎ|가-힣| ·|：]'),
+                          allow: true,
+                        )
+                      ],
+                      autovalidateMode: AutovalidateMode.always,
+                      decoration: InputDecoration(
+                          counterText: '',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        hintText: '동물의 종을 적어주세요.'),
-                    onSaved: (value) {
-                      setState(() {
-                        _kindinput = value as String;
-                      });
-                    },
+                          hintText: '동물의 종을 적어주세요.'),
+                      onSaved: (value) {
+                        setState(() {
+                          _kindinput = value as String;
+                        });
+                      },
+                    ),
                   ),
-                ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -634,6 +663,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
+        isDefault = false;
         _pickedFile = pickedFile;
       });
     } else {
@@ -648,6 +678,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
+        isDefault = false;
         _pickedFile = pickedFile;
       });
     } else {
@@ -660,6 +691,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
 // 기본이미지 설정
   _getDefaultImage() async {
     setState(() {
+      isDefault = true;
       _pickedFile = Image.asset('assets/ch_top_yellow.png') as XFile?;
     });
   }

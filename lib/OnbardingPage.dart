@@ -53,25 +53,27 @@ class _OnbardingPageState extends State<OnbardingPage> {
                     reverse: true,
                       title: '안녕하세요!',
                       body: '''건강하고 재밌게,
-  임시보호를 기록하는 다시, 봄이에요''',
-                      image: Image.asset('assets/dasibom_orange.png'),
+  동물 친구들과 하루를 기록하는                
+  임시보호 일지 다시, 봄입니다.''',
+                      image: Image.asset('assets/onboard_1.png'),
                       decoration: getPageDecoration()),
                   PageViewModel(
                       reverse: true,
                       title: '기록하기',
-                      body: '''다시, 봄 챌린지에 참여하고
- 동물 친구들의 귀여운 모습을 
- 마음껏 자랑해요''',
-                      image: Image.asset('assets/dasibom_yellow.png'),
+                      body: '''일상을 기록하거나
+  다시, 봄 챌린지에서 
+                 동물 친구들의 귀여운 모습을 
+마음껏 자랑해요!''',
+                      image: Image.asset('assets/onboard_2.png'),
                       decoration: getPageDecoration()),
                   PageViewModel(
                       reverse: true,
                       title: '추억하기',
                       body: '''임시보호가 끝나도 
- 추억을 다시 돌아볼 수 있어요
- 어떤 재밌는 일이 일어날지
- 지금 바로 시작해 보세요!''',
-                      image: Image.asset('assets/dasibom_orange.png'),
+ 추억을 다시 돌아봐요
+              어떤 재밌는 일들이 일어날지
+        지금 바로 시작해 보세요!''',
+                      image: Image.asset('assets/onboard_3.png'),
                       decoration: getPageDecoration()),
                 ],
                 done: const Text('done'),
@@ -126,18 +128,14 @@ class _OnbardingPageState extends State<OnbardingPage> {
           // 둘러보기
           SizedBox(
             child: Container(
-              height: 25,
+              height: 40,
               color: Colors.white,
-              margin: EdgeInsets.only(top: 30),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                  backgroundColor: MaterialStateProperty.all(Colors.black),
-                ),
+              margin: EdgeInsets.only(top: 15),
+              child: TextButton(
                 onPressed: (){},
                 child: Text(
                   "둘러보기",
-                  style: TextStyle(color: Colors.white,fontWeight:FontWeight.w600),),
+                  style: TextStyle(color: Colors.black,fontWeight:FontWeight.w600),),
               ),
             ),
           ),
@@ -170,19 +168,19 @@ Route _createRoute() {
 PageDecoration getPageDecoration() {
   return PageDecoration(
       // title 스타일
-      titlePadding: EdgeInsets.only(top: 50),
-      bodyAlignment:Alignment.topCenter,
+      titlePadding: EdgeInsets.only(top: 60),
+      bodyAlignment:Alignment.topLeft,
       titleTextStyle: TextStyle(
-          fontSize: 25,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.black),
       // 본문 스타일
-      bodyPadding: EdgeInsets.only(top: 20),
+      bodyPadding: EdgeInsets.only(top: 15),
       bodyTextStyle: TextStyle(
         fontSize: 15,
         color: Colors.black,
       ),
-      imageAlignment: Alignment.bottomCenter,
-      imagePadding: EdgeInsets.only(top: 50),
+      imageAlignment: Alignment.bottomRight,
+      imagePadding: EdgeInsets.only(top: 45,right: 50),
       pageColor: Color(0xFFF8F8F9));
 }
