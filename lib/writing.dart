@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_flutter2/MainPage.dart';
-import 'package:login_flutter2/profile_register_animal.dart';
 import 'package:remedi_kopo/remedi_kopo.dart';
 
 import 'package:http/http.dart' as http;
@@ -21,8 +20,15 @@ class Writing extends StatefulWidget {
   State<Writing> createState() => _WritingState();
 }
 
+const double width = 80.0;
+const double height = 30.0;
+const double yesAlign = -1;
+const double noAlign = 1;
+const Color selectedColor = Colors.white;
+const Color normalColor = Colors.black54;
+
 class _WritingState extends State<Writing> {
-  // 프로필 이미지 받아오기
+  // 이미지 받아오기
   XFile? _pickedFile; // 이미지를 담을 변수 선언
   List<XFile?> _pickedImages = []; // 이미지 여러개 담을 변수 선언
   final ImagePicker imagePicker = ImagePicker(); // ImagePicker 초기화
@@ -46,21 +52,28 @@ class _WritingState extends State<Writing> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map<String, String> formData = {};
 
-  final TextEditingController _titleController = TextEditingController(); // 제목 저장 변수
-  final TextEditingController _bodyController = TextEditingController(); // 본문 저장 변수
+  final TextEditingController _bodyController =
+      TextEditingController(); // 본문 저장 변수
 
   late bool validationResult;
-  String _title = ''; // 제목
   String _body = ''; // 본문
 
   // 카테고리 콤보박스
   final _category = ['일기쓰기', '챌린지 등록하기'];
   var _selectedcategory = '일기쓰기';
 
+  // 나만보기 토글
+  late double xAlign;
+  late Color yesColor;
+  late Color noColor;
+
   @override
   void initState() {
     validationResult = false;
     super.initState();
+    xAlign = yesAlign;
+    yesColor = selectedColor;
+    noColor = normalColor;
   }
 
   @override
@@ -119,28 +132,13 @@ class _WritingState extends State<Writing> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: Color(0xffFFF5BF),
-                  height: 110,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                        child: Image.asset('assets/dasibom_orange.png'),
-                      ),
-                      SizedBox(
-                        child: Image.asset('assets/ic_balloon_write.png'),
-                      ),
-                    ],
-                  ),
-                ),
                 SizedBox(
-                  height: 30,
+                  height: 15,
                 ),
                 Container(
                   width: 340,
                   child: Text(
-                    '카테고리 선택',
+                    '카테고리 선택하기',
                     textAlign: TextAlign.left,
                     style:
                         TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
@@ -148,8 +146,7 @@ class _WritingState extends State<Writing> {
                 ),
                 // 카테고리 등록
                 Padding(
-                  padding:
-                      const EdgeInsets.only(right: 130,left: 20,top: 5),
+                  padding: const EdgeInsets.only(right: 130, left: 20, top: 5),
                   child: DropdownButtonFormField(
                     value: _selectedcategory,
                     items: _category.map(
@@ -161,18 +158,18 @@ class _WritingState extends State<Writing> {
                       },
                     ).toList(),
                     decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                  ),
-                ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            hintText: '카야와 3일째 기록!'),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         _selectedcategory = value!;
@@ -186,88 +183,7 @@ class _WritingState extends State<Writing> {
                 Container(
                   width: 340,
                   child: Text(
-                    '제목',
-                    textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
-                  ),
-                ),
-                // 제목 등록
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1,
-                          ),
-                        ),
-                        hintText: '카야와 3일째 기록!'),
-                    onSaved: (value) {
-                      setState(() {
-                        _title = value as String;
-                      });
-                    },
-                    controller: _titleController,
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: 340,
-                  child: Text(
-                    '본문',
-                    textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
-                  ),
-                ),
-                // 본문 등록
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: TextFormField(
-                    maxLines: 4,
-                    keyboardType: TextInputType.text,
-                    autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1,
-                          ),
-                        ),
-                        hintText: '카야와 3일째 기록!'),
-                    onSaved: (value) {
-                      setState(() {
-                        _body = value as String;
-                      });
-                    },
-                    controller: _bodyController,
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: 340,
-                  child: Text(
-                    '사진',
+                    '사진 등록하기',
                     textAlign: TextAlign.left,
                     style:
                         TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
@@ -305,6 +221,47 @@ class _WritingState extends State<Writing> {
                 Container(
                   width: 340,
                   child: Text(
+                    '본문 작성하기',
+                    textAlign: TextAlign.left,
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                  ),
+                ),
+                // 본문 등록
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: TextFormField(
+                    maxLines: 10,
+                    keyboardType: TextInputType.text,
+                    autovalidateMode: AutovalidateMode.always,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 1,
+                          ),
+                        ),
+                        hintText: '카야와 3일째 기록!'),
+                    onSaved: (value) {
+                      setState(() {
+                        _body = value as String;
+                      });
+                    },
+                    controller: _bodyController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  width: 340,
+                  child: Text(
                     '다시,봄 스탬프',
                     textAlign: TextAlign.left,
                     style:
@@ -320,60 +277,142 @@ class _WritingState extends State<Writing> {
                     child: const Text(
                       '+ 스탬프 더보기',
                       textAlign: TextAlign.right,
-                      style:
-                      TextStyle(fontWeight: FontWeight.normal, fontSize: 10,color: Colors.black),
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 10,
+                          color: Colors.black),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 // 다시,봄 스탬프 등록
-                if (_pickedFile == null)
-                  Container(
-                    constraints: BoxConstraints(
-                      minHeight: _imageSize,
-                      minWidth: _imageSize,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      child: Image.asset('assets/stamp1.png'),
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        _showBottomSheet();
-                      },
-                      child: Center(
-                        child: Image.asset('assets/img_register.png',
-                            scale: 2, alignment: Alignment.centerLeft),
+                    SizedBox(
+                      child: Image.asset('assets/stamp2.png'),
+                    ),
+                    SizedBox(
+                      child: Image.asset('assets/stamp3.png'),
+                    ),
+                    SizedBox(
+                      child: Image.asset('assets/stamp4.png'),
+                    ),
+                    SizedBox(
+                      child: Image.asset('assets/stamp5.png'),
+                    ),
+                    SizedBox(
+                      child: Image.asset('assets/stamp6.png'),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  width: 340,
+                  child: Text(
+                    '나만 보기 설정',
+                    textAlign: TextAlign.left,
+                    style:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                  ),
+                ),
+                // 나만 보기 설정
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                          width: width,
+                          height: height,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(50.0),
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              AnimatedAlign(
+                                alignment: Alignment(xAlign, 0),
+                                duration: Duration(milliseconds: 300),
+                                child: Container(
+                                  width: width * 0.5,
+                                  height: height,
+                                  decoration: BoxDecoration(
+                                    color: Colors.lightGreen,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(50.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    xAlign = yesAlign;
+                                    yesColor = selectedColor;
+                                    noColor = normalColor;
+                                  });
+                                },
+                                child: Align(
+                                  alignment: Alignment(-1, 0),
+                                  child: Container(
+                                    width: width * 0.5,
+                                    color: Colors.transparent,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'YES',
+                                      style: TextStyle(
+                                        color: yesColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    xAlign = noAlign;
+                                    noColor = selectedColor;
+
+                                    yesColor = normalColor;
+                                  });
+                                },
+                                child: Align(
+                                  alignment: Alignment(1, 0),
+                                  child: Container(
+                                    width: width * 0.5,
+                                    color: Colors.transparent,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'NO',
+                                      style: TextStyle(
+                                        color: noColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      Text(
+                        '* 일기를 나만 열람할 수 있어요.',
+                        textAlign: TextAlign.left,
+                        style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                       ),
-                    ),
-                  )
-                else
-                  Center(
-                      child: isDefault == false
-                          ? Container(
-                              width: _imageSize,
-                              height: _imageSize,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                image: DecorationImage(
-                                    image: FileImage(File(_pickedFile!.path)),
-                                    fit: BoxFit.cover),
-                              ),
-                            )
-                          : Container(
-                              width: _imageSize,
-                              height: _imageSize,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                image: DecorationImage(
-                                    image: AssetImage(defaultImg),
-                                    fit: BoxFit.contain),
-                              ),
-                            )),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -400,7 +439,8 @@ class _WritingState extends State<Writing> {
                             formKey.currentState!.save();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text(_title + '/' + '/' + _body)),
+                                  content:
+                                      Text(_selectedcategory + '/' + _body)),
                             );
 
                             // Writing(formData);
@@ -539,7 +579,7 @@ class _WritingState extends State<Writing> {
     if (pickedFile != null) {
       setState(() {
         isDefault = false;
-        _pickedFile = pickedFile;
+        _pickedImages = pickedFile as List<XFile?>;
       });
     } else {
       if (kDebugMode) {
@@ -554,7 +594,7 @@ class _WritingState extends State<Writing> {
     if (pickedFile != null) {
       setState(() {
         isDefault = false;
-        _pickedFile = pickedFile;
+        _pickedImages = pickedFile as List<XFile?>;
       });
     } else {
       if (kDebugMode) {
