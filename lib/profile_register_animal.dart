@@ -1,6 +1,8 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:login_flutter2/provider/user_provider.dart';
+import 'package:login_flutter2/register_finish.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +10,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_flutter2/writing.dart';
-import 'package:provider/provider.dart';
 import 'package:login_flutter2/MainPage.dart';
 
 class RegisterProfileAnimal extends StatefulWidget {
@@ -126,33 +127,33 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                   Center(
                       child: isDefault == false
                           ? Container(
-                          width: _imageSize,
-                          height: _imageSize,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  width: 2,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary),
-                              image: DecorationImage(
-                                  image: FileImage(File(_pickedFile!.path)),
-                                  fit: BoxFit.cover)))
+                              width: _imageSize,
+                              height: _imageSize,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  image: DecorationImage(
+                                      image: FileImage(File(_pickedFile!.path)),
+                                      fit: BoxFit.cover)))
                           : Container(
-                        width: _imageSize,
-                        height: _imageSize,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                width: 2,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary),
-                            image: DecorationImage(
-                              image: AssetImage(defaultImg),
-                              fit: BoxFit.contain,
+                              width: _imageSize,
+                              height: _imageSize,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  image: DecorationImage(
+                                    image: AssetImage(defaultImg),
+                                    fit: BoxFit.contain,
+                                  )),
                             )),
-                      )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -305,7 +306,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                 if (_selectedValue == '직접 입력')
                   Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: TextFormField(
                       maxLength: 10,
                       keyboardType: TextInputType.text,
@@ -503,34 +504,9 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                                     _intro)),
                           );
 
-                          // 가입 완료 팝업 메시지
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('환영합니다!'),
-                                  content: SingleChildScrollView(
-                                    child: ListBody(
-                                      children: <Widget>[
-                                        Text('회원가입이 완료되었습니다:)'),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      child: Text('확인'),
-                                      onPressed: () {
-                                        Navigator.of(context).push(_createRoute());
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-
                           // 홈 화면으로 이동
-                          // final result =
-                          //     await Navigator.of(context).push(_createRoute());
+                          final result =
+                              await Navigator.of(context).push(_createRoute());
                         },
                       ),
                       child: Text(
@@ -587,7 +563,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
   // 페이지 전환 애니메이션
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const Writing(),
+      pageBuilder: (context, animation, secondaryAnimation) => const RegisterFinish(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 10.0);
         const end = Offset.zero;

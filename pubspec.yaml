@@ -50,6 +50,7 @@ dependencies:
   provider:
   http:
   remedi_kopo:
+  confetti:
 
 #  kakao_flutter_sdk_user: ^1.2.2 # 카카오 로그인
 #  kakao_flutter_sdk_talk: ^1.3.0-beta.4 # 카카오톡(소셜, 메시지)
