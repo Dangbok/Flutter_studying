@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flutter2/writing.dart';
 
+import 'MainPage.dart';
+
 class RegisterFinish extends StatefulWidget {
   const RegisterFinish({Key? key}) : super(key: key);
 
@@ -134,7 +136,7 @@ class _RegisterFinishState extends State<RegisterFinish> {
   // 페이지 전환 애니메이션
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const Writing(),
+      pageBuilder: (context, animation, secondaryAnimation) => const MainPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 10.0);
         const end = Offset.zero;

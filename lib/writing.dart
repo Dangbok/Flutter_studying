@@ -101,7 +101,7 @@ class _WritingState extends State<Writing> {
           ? Container()
           : FittedBox(
               child: Container(
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.6),
                       shape: BoxShape.circle),
@@ -132,12 +132,12 @@ class _WritingState extends State<Writing> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Container(
                   width: 340,
-                  child: Text(
+                  child: const Text(
                     '카테고리 선택하기',
                     textAlign: TextAlign.left,
                     style:
@@ -157,7 +157,7 @@ class _WritingState extends State<Writing> {
                         );
                       },
                     ).toList(),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.black,
@@ -182,7 +182,7 @@ class _WritingState extends State<Writing> {
                 ),
                 Container(
                   width: 340,
-                  child: Text(
+                  child: const Text(
                     '사진 등록하기',
                     textAlign: TextAlign.left,
                     style:
@@ -192,7 +192,7 @@ class _WritingState extends State<Writing> {
                 // 사진 등록
                 GridView.count(
                   shrinkWrap: true,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   crossAxisCount: isPadMode ? 1 : 4,
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5,
@@ -213,14 +213,14 @@ class _WritingState extends State<Writing> {
                           color: Colors.grey,
                           dashPattern: [5, 3],
                           borderType: BorderType.RRect,
-                          radius: Radius.circular(10))).toList(),
+                          radius: const Radius.circular(10))).toList(),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 Container(
                   width: 340,
-                  child: Text(
+                  child: const Text(
                     '본문 작성하기',
                     textAlign: TextAlign.left,
                     style:
@@ -235,7 +235,7 @@ class _WritingState extends State<Writing> {
                     maxLines: 10,
                     keyboardType: TextInputType.text,
                     autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
@@ -261,7 +261,7 @@ class _WritingState extends State<Writing> {
                 ),
                 Container(
                   width: 340,
-                  child: Text(
+                  child: const Text(
                     '다시,봄 스탬프',
                     textAlign: TextAlign.left,
                     style:
@@ -271,7 +271,7 @@ class _WritingState extends State<Writing> {
                 Container(
                   width: 340,
                   child: TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       alignment: Alignment.topRight,
                     ),
                     child: const Text(
@@ -314,11 +314,11 @@ class _WritingState extends State<Writing> {
                 ),
                 Container(
                   width: 340,
-                  child: Text(
+                  child: const Text(
                     '나만 보기 설정',
                     textAlign: TextAlign.left,
                     style:
-                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
                   ),
                 ),
                 // 나만 보기 설정
@@ -328,87 +328,87 @@ class _WritingState extends State<Writing> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                          width: width,
-                          height: height,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(50.0),
-                            ),
-                          ),
-                          child: Stack(
-                            children: [
-                              AnimatedAlign(
-                                alignment: Alignment(xAlign, 0),
-                                duration: Duration(milliseconds: 300),
-                                child: Container(
-                                  width: width * 0.5,
-                                  height: height,
-                                  decoration: BoxDecoration(
-                                    color: Colors.lightGreen,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    xAlign = yesAlign;
-                                    yesColor = selectedColor;
-                                    noColor = normalColor;
-                                  });
-                                },
-                                child: Align(
-                                  alignment: Alignment(-1, 0),
-                                  child: Container(
-                                    width: width * 0.5,
-                                    color: Colors.transparent,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'YES',
-                                      style: TextStyle(
-                                        color: yesColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    xAlign = noAlign;
-                                    noColor = selectedColor;
-
-                                    yesColor = normalColor;
-                                  });
-                                },
-                                child: Align(
-                                  alignment: Alignment(1, 0),
-                                  child: Container(
-                                    width: width * 0.5,
-                                    color: Colors.transparent,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'NO',
-                                      style: TextStyle(
-                                        color: noColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        width: width,
+                        height: height,
+                        decoration: const BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50.0),
                           ),
                         ),
-                      Text(
+                        child: Stack(
+                          children: [
+                            AnimatedAlign(
+                              alignment: Alignment(xAlign, 0),
+                              duration: const Duration(milliseconds: 300),
+                              child: Container(
+                                width: width * 0.5,
+                                height: height,
+                                decoration: const BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  xAlign = yesAlign;
+                                  yesColor = selectedColor;
+                                  noColor = normalColor;
+                                });
+                              },
+                              child: Align(
+                                alignment: const Alignment(-1, 0),
+                                child: Container(
+                                  width: width * 0.5,
+                                  color: Colors.transparent,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'YES',
+                                    style: TextStyle(
+                                      color: yesColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  xAlign = noAlign;
+                                  noColor = selectedColor;
+
+                                  yesColor = normalColor;
+                                });
+                              },
+                              child: Align(
+                                alignment: const Alignment(1, 0),
+                                child: Container(
+                                  width: width * 0.5,
+                                  color: Colors.transparent,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'NO',
+                                    style: TextStyle(
+                                      color: noColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Text(
                         '* 일기를 나만 열람할 수 있어요.',
                         textAlign: TextAlign.left,
-                        style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 13),
                       ),
                     ],
                   ),
@@ -423,13 +423,13 @@ class _WritingState extends State<Writing> {
                   child: Container(
                     height: 30,
                     color: Colors.white,
-                    margin: EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
                       style: ButtonStyle(
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xFFFFED8E)),
+                            MaterialStateProperty.all(const Color(0xFFFFED8E)),
                       ),
                       onPressed: () {
                         setState(
@@ -451,17 +451,17 @@ class _WritingState extends State<Writing> {
                                 barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('완료'),
+                                    title: const Text('완료'),
                                     content: SingleChildScrollView(
                                       child: ListBody(
                                         children: <Widget>[
-                                          Text('작성된 일기가 등록되었습니다:)'),
+                                          const Text('작성된 일기가 등록되었습니다:)'),
                                         ],
                                       ),
                                     ),
                                     actions: <Widget>[
                                       ElevatedButton(
-                                        child: Text('확인'),
+                                        child: const Text('확인'),
                                         onPressed: () {
                                           Navigator.of(context)
                                               .push(_createRoute());
@@ -470,14 +470,10 @@ class _WritingState extends State<Writing> {
                                     ],
                                   );
                                 });
-
-                            // 마이페이지 화면으로 이동
-                            final result = await Navigator.of(context)
-                                .push(_createRoute());
                           },
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         "일기 등록하기",
                         style: TextStyle(
                           color: Colors.black,
