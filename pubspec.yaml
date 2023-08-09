@@ -37,6 +37,8 @@ dependencies:
   image_cropper:
   dotted_border:
   image_picker:
+  chips_choice:
+  flutter_switch:
   flutter:
     sdk: flutter
 

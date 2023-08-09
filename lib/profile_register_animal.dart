@@ -395,7 +395,7 @@ class _RegisterProfileAnimalState extends State<RegisterProfileAnimal> {
                           final selectedDate = await showDatePicker(
                             context: context,
                             initialDate: date,
-                            firstDate: DateTime(1990),
+                            firstDate: DateTime(2000),
                             lastDate: DateTime.now(),
                           );
                           if (selectedDate != null) {

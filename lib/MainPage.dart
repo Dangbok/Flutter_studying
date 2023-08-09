@@ -6,9 +6,9 @@ import 'package:login_flutter2/writing.dart';
 
 // Page1의 _buildMiddle() 메서드에 들어갈 사진 url
 final dummyItems = [
-  'https://pixabay.com/get/g126161cd963f711b0d3e5731ecbc998281d7edeb5c19d9a8cfb4d09389330c62ed56c52c467f89b399f5ed318044f7e3aa45b2f84dd4f7004febb7328c0aff6b_1920.jpg',
-  'https://pixabay.com/get/g495f85ff627ff0649d680876f1646ce3f8ac92a673b5ea5a25688353d1e5e4f7836d6ddafe52a159328523d727443969ae2298c799e88a06f0d3e288bb2f37f2_1280.jpg',
-  'https://pixabay.com/get/g31892fcf9123be1080107511ed394be72f011117ee54737ee9cc6b4bd53c9156da53ef33670a31c654b4d87f783b79840b1842f723b53173d0ca4a9325c81c05_1280.jpg',
+  'https://cdn.pixabay.com/photo/2016/11/22/23/44/porsche-1851246_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2016/11/29/01/22/automotive-1866521_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2016/03/11/02/08/speedometer-1249610_960_720.jpg',
 ];
 
 class MainPage extends StatefulWidget {
@@ -113,17 +113,12 @@ class _MainPageState extends State<MainPage> {
       // index에 따라 페이지 바뀜
       body: _pages[_index],
 
-      // 플로팅 위젯
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {},
-      //     child: const Icon(Icons.add),
-      //     backgroundColor: Color(0xff8FDBA2)),
-
       // 하단 내비게이션 바
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
         onTap: (index) {
           setState(() {
             _index = index; // 선택된 탭의 인덱스로 _index를 변경
@@ -246,12 +241,13 @@ class Page1 extends StatelessWidget {
 
   // 홈 클래스 _ 중단
   Widget _buildMiddle() {
+    var viewModel;
     return Column(
       children: [
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left:30, top: 10),
+              padding: const EdgeInsets.only(left: 30, top: 10),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
@@ -268,7 +264,7 @@ class Page1 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:30, top: 10),
+              padding: const EdgeInsets.only(left: 30, top: 10),
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
@@ -288,7 +284,7 @@ class Page1 extends StatelessWidget {
         ),
         CarouselSlider(
           options: CarouselOptions(
-            height: 120,
+            height: 150,
             autoPlay: true,
           ),
           items: dummyItems.map((url) {
@@ -313,7 +309,7 @@ class Page1 extends StatelessWidget {
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left:30, top: 10),
+              padding: const EdgeInsets.only(left: 30, top: 10),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
@@ -330,7 +326,7 @@ class Page1 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:60, top: 10),
+              padding: const EdgeInsets.only(left: 60, top: 10),
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
@@ -375,7 +371,7 @@ class Page1 extends StatelessWidget {
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left:30, top: 10),
+              padding: const EdgeInsets.only(left: 30, top: 10),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
@@ -392,7 +388,7 @@ class Page1 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:70, top: 10),
+              padding: const EdgeInsets.only(left: 70, top: 10),
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
@@ -444,7 +440,7 @@ class Page1 extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left:30, top: 10),
+                padding: const EdgeInsets.only(left: 30, top: 10),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: TextButton(
@@ -469,10 +465,36 @@ class Page1 extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       height: 170,
                       width: 110,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
+                          Center(
+                            child: Container(
+                              height: 30,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.green,
+                              ),
+                              child: Text('산책왕',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/dog.jpg'),
+                          ),
+                          Text('곰곰이',
+                          ),
                         ],
                       ),
                     ),
@@ -480,10 +502,36 @@ class Page1 extends StatelessWidget {
                       alignment: Alignment.center,
                       height: 170,
                       width: 110,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
+                          Center(
+                            child: Container(
+                              height: 30,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.orange,
+                              ),
+                              child: Text('유쾌왕',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/dog.jpg'),
+                          ),
+                          Text('뭉치',
+                          ),
                         ],
                       ),
                     ),
@@ -491,10 +539,36 @@ class Page1 extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 170,
                       width: 110,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
+                          Center(
+                            child: Container(
+                              height: 30,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.purple,
+                              ),
+                              child: Text('드림왕',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/dog.jpg'),
+                          ),
+                          Text('카야',
+                          ),
                         ],
                       ),
                     ),
@@ -508,7 +582,7 @@ class Page1 extends StatelessWidget {
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.only(left:30, top: 10),
+          padding: const EdgeInsets.only(left: 30, top: 10),
           child: Align(
             alignment: Alignment.topLeft,
             child: TextButton(
@@ -527,8 +601,182 @@ class Page1 extends StatelessWidget {
         Container(
           height: 500,
           width: 500,
-          color: Colors.grey,
-        )
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 180,
+                        width: 180,
+                        child: InkWell(
+                          onTap: () {}, // Handle your callback.
+                          splashColor: Colors.brown.withOpacity(0.5),
+                          child: Ink(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage('assets/dog.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text('뭉치의 낮잠',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text('''고양이는 하루에 10시간을 넘게
+잔다고 하는데...''',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 180,
+                        width: 180,
+                        child: InkWell(
+                          onTap: () {}, // Handle your callback.
+                          splashColor: Colors.brown.withOpacity(0.5),
+                          child: Ink(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage('assets/dog.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text('샐리와 처음 만난 날',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text('''운명처럼 만난 너무나 귀엽고
+사람을 좋아하는 아이!''',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 180,
+                        width: 180,
+                        child: InkWell(
+                          onTap: () {}, // Handle your callback.
+                          splashColor: Colors.brown.withOpacity(0.5),
+                          child: Ink(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage('assets/dog.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text('비누 이야기',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text('''비누는 정말 똑똑합니다.
+제가 일어나는 시간을 딱 맞춰서...''',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 180,
+                        width: 180,
+                        child: InkWell(
+                          onTap: () {}, // Handle your callback.
+                          splashColor: Colors.brown.withOpacity(0.5),
+                          child: Ink(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage('assets/dog.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text('웃는게 넘 귀여운 우리 애기',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text('''강아지의 웃음은 너무나 무해하다.
+오늘은 특히나 산책하는데...''',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -538,7 +786,7 @@ class Page1 extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left:30, top: 10),
+          padding: const EdgeInsets.only(left: 30, top: 10),
           child: Align(
             alignment: Alignment.topLeft,
             child: TextButton(
@@ -554,23 +802,34 @@ class Page1 extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
-            height: 100,
-            width: 500,
-            color: Color(0xffFF86B2),
-            child: Image.asset('assets/ic_guide1.png'),
-            ),
+        SizedBox(
+          height: 100,
+          width: 350,
+          child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+                backgroundColor:
+                    MaterialStateProperty.all(const Color(0xFFFF86B2)),
+              ),
+              onPressed: () => {},
+              child: Image.asset('assets/ic_guide1.png')),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-          child: Container(
-            height: 100,
-            width: 500,
-            color: Color(0xffFDCC85),
-            child: Image.asset('assets/ic_guide2.png'),
-          ),
+        const SizedBox(
+          height: 15,
+        ),
+        SizedBox(
+          height: 100,
+          width: 350,
+          child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+                backgroundColor:
+                    MaterialStateProperty.all(const Color(0xFFFDCC85)),
+              ),
+              onPressed: () => {},
+              child: Image.asset('assets/ic_guide2.png')),
         ),
       ],
     );
