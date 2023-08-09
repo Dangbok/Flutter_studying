@@ -3,12 +3,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:login_flutter2/Kakao_login.dart';
 import 'package:login_flutter2/main_view_model.dart';
 import 'package:login_flutter2/writing.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 // Page1의 _buildMiddle() 메서드에 들어갈 사진 url
 final dummyItems = [
-  'https://cdn.pixabay.com/photo/2016/11/22/23/44/porsche-1851246_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2016/11/29/01/22/automotive-1866521_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2016/03/11/02/08/speedometer-1249610_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2016/02/18/18/37/puppy-1207816_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2017/09/25/13/14/dog-2785077_960_720.jpg',
 ];
 
 class MainPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final storage = FlutterSecureStorage();
+
   // 로그인 생성자
   final viewModel = MainViewModel(KakaoLogin());
 
@@ -47,8 +51,8 @@ class _MainPageState extends State<MainPage> {
           IconButton(
             // 카카오 로그아웃 버튼
             onPressed: () async {
-              await viewModel.logout();
-              setState(() {});
+              await storage.deleteAll(); // Delete all
+              // await viewModel.logout();
               // 로그아웃 되면 로그인 화면으로 화면 이동
               final result = await Navigator.pushNamed(context, '/login');
             },

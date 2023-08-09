@@ -39,6 +39,10 @@ dependencies:
   image_picker:
   chips_choice:
   flutter_switch:
+  url_launcher:
+  flutter_web_auth:
+  flutter_secure_storage:
+  flutter_dotenv:
   flutter:
     sdk: flutter
 
@@ -95,6 +99,7 @@ flutter_native_splash:
 flutter:
   assets:
     - assets/
+    - .env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
