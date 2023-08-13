@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_flutter2/MainPage.dart';
+import 'package:login_flutter2/seeing.dart';
 import 'package:remedi_kopo/remedi_kopo.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -426,7 +427,7 @@ class _WritingState extends State<Writing> {
   // 페이지 전환 애니메이션
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const MainPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => const Seeing(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 10.0);
         const end = Offset.zero;

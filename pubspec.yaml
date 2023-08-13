@@ -43,6 +43,8 @@ dependencies:
   flutter_web_auth:
   flutter_secure_storage:
   flutter_dotenv:
+  expandable_text:
+  get:
   flutter:
     sdk: flutter
 

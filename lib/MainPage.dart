@@ -116,7 +116,6 @@ class _MainPageState extends State<MainPage> {
       ),
       // index에 따라 페이지 바뀜
       body: _pages[_index],
-
       // 하단 내비게이션 바
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
@@ -851,7 +850,7 @@ class Page2 extends StatefulWidget {
 class _Page2State extends State<Page2> {
   @override
   Widget build(BuildContext context) {
-    return Writing();
+    return const Writing();
   }
 }
 
