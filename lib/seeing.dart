@@ -146,6 +146,9 @@ class _SeeingState extends State<Seeing> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: GestureDetector(
             child: Image.asset('assets/ic_more.png'),
+            onTap: () {
+              _moreBottomSheet();
+            },
           ),
         ),
       ],
@@ -188,8 +191,7 @@ class _SeeingState extends State<Seeing> {
               _current = index;
             });
           },
-        )
-    );
+        ));
   }
 
   Widget _comment() {
@@ -199,17 +201,22 @@ class _SeeingState extends State<Seeing> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // 쓰다듬기 count
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              '123번 쓰다듬받았어요!',
-              // '좋아요 ${widget.countLikes}개',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+          GestureDetector(
+            child: const Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                '123번 쓰다듬받았어요!',
+                // '좋아요 ${widget.countLikes}개',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
+            onTap: () {
+              _likeBottomSheet();
+            },
           ),
           // 본문 내용
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: ExpandableText(
               // 피드 내용
               '카야랑 오늘은 한강을 따라 산책을 갔다.\n흙냄새가 좋은지..마구 달리던 카야\n너무 귀여웠다.\n오늘의 산책 완료!',
@@ -218,27 +225,15 @@ class _SeeingState extends State<Seeing> {
               prefixText: '글린다', // 작성자의 이름
               // 작성자의 이름 스타일
               prefixStyle:
-                  const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ),
           // 챌린지 주제
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Text(
               '[챌린지] 날도 좋은데, 기분 좋은 산책 일기',
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ),
-          //댓글 모두 보기 부분
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: GestureDetector(
-              onTap: () {},
-              child: Text(
-                '댓글 10개 모두 보기',
-                // '댓글 ${widget.countComment}개 모두 보기',
-                style: const TextStyle(color: Colors.grey),
-              ),
+              style: TextStyle(color: Colors.grey),
             ),
           ),
           // 댓글 달기 영역
@@ -276,25 +271,29 @@ class _SeeingState extends State<Seeing> {
       children: [
         Row(
           children: [
-            // 댓글
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 10),
-              child: GestureDetector(
-                child: Image.asset('assets/ic_comment.png'),
-              ),
-            ),
-            const Text(
-              '(10)',
-            ),
             // 쓰다듬기
             Padding(
               padding: const EdgeInsets.only(left: 25, right: 10),
               child: GestureDetector(
                 child: Image.asset('assets/ic_good.png'),
+                onTap: () { },
               ),
             ),
             const Text(
               '(123)',
+            ),
+            // 댓글
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 10),
+              child: GestureDetector(
+                child: Image.asset('assets/ic_comment.png'),
+                onTap: () {
+                  _commentBottomSheet();
+                },
+              ),
+            ),
+            const Text(
+              '(10)',
             ),
           ],
         ),
@@ -310,6 +309,118 @@ class _SeeingState extends State<Seeing> {
           ],
         ),
       ],
+    );
+  }
+
+  // 더보기 버튼 확장 메뉴
+  _moreBottomSheet() {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 50,
+              width: 350,
+              child: OutlinedButton(
+                style: ButtonStyle(
+                    side: MaterialStateProperty.all(const BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                        style: BorderStyle.solid))),
+                onPressed: () => {},
+                child: Image.asset('assets/ic_edit.png'),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 50,
+              width: 350,
+              child: OutlinedButton(
+                style: ButtonStyle(
+                    side: MaterialStateProperty.all(const BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                        style: BorderStyle.solid))),
+                onPressed: () => {},
+                child: Image.asset('assets/ic_delete.png'),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _likeBottomSheet() {
+    bool isScrollControlled;
+    return showModalBottomSheet<dynamic> (
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Text('쓰다듬은 사람'),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(
+              thickness: 3,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _commentBottomSheet() {
+    bool isScrollControlled;
+    return showModalBottomSheet<dynamic> (
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Text('댓글'),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(
+              thickness: 3,
+            ),
+          ],
+        );
+      },
     );
   }
 }
