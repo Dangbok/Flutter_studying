@@ -40,6 +40,7 @@ dependencies:
   chips_choice:
   flutter_switch:
   url_launcher:
+  shared_preferences:
   flutter_web_auth:
   flutter_secure_storage:
   flutter_dotenv:
