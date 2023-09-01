@@ -45,6 +45,7 @@ dependencies:
   flutter_dotenv:
   expandable_text:
   get:
+  like_button:
   flutter:
     sdk: flutter
 

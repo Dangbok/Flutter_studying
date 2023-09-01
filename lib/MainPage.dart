@@ -62,13 +62,13 @@ class _MainPageState extends State<MainPage> {
           IconButton(
             // 채팅 버튼
             onPressed: () {},
-            icon: Image.asset('assets/ic_chat.png'),
+            icon: Icon(Icons.chat_outlined),
             color: Colors.black,
           ),
           IconButton(
             // 알림 버튼
             onPressed: () {},
-            icon: Image.asset('assets/ic_alarm.png'),
+            icon: Icon(Icons.add_alert_outlined),
             color: Colors.black,
           ),
           IconButton(
@@ -76,7 +76,7 @@ class _MainPageState extends State<MainPage> {
             onPressed: () {
               _scaffoldKey.currentState?.openEndDrawer();
             },
-            icon: Image.asset('assets/ic_menu.png'),
+            icon: Icon(Icons.menu),
             color: Colors.black,
           ),
         ],
@@ -119,9 +119,8 @@ class _MainPageState extends State<MainPage> {
       // 하단 내비게이션 바
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+        selectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.black,
         onTap: (index) {
           setState(() {
             _index = index; // 선택된 탭의 인덱스로 _index를 변경
@@ -132,20 +131,20 @@ class _MainPageState extends State<MainPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             // 하단 탭 아이템리스트 선언
-            label: '홈',
-            icon: Image.asset('assets/ic_bottom1.png'),
+            label: '',
+            icon: Icon(Icons.home_outlined),
           ),
           BottomNavigationBarItem(
-            label: '일기쓰기',
-            icon: Image.asset('assets/ic_bottom2.png'),
+            label: '',
+            icon: Icon(Icons.border_color_outlined),
           ),
           BottomNavigationBarItem(
-            label: '임시',
-            icon: Image.asset('assets/ic_bottom3.png'),
+            label: '',
+            icon: Icon(Icons.people_outline),
           ),
           BottomNavigationBarItem(
-            label: '나의 봄',
-            icon: Image.asset('assets/ic_bottom4.png'),
+            label: '',
+            icon: Icon(Icons.account_circle_outlined),
           ),
         ],
       ),
